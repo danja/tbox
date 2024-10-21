@@ -3,19 +3,31 @@ services:
   app:
     build: .
     ports:
-      # world-facing
-      - "3770:3770"
-      # internal
-      - "8311:8311"
-    volumes:
-      # Bind mount for application code
-      - ./app:/home/myuser/app
-      # Named volume for persistent data
-      - data_volume:/home/myuser/data
-      # Bind mount for logs (example)
-      - ./logs:/var/log/myapp
+      - "3000:3000"
+    depends_on:
+      - fuseki
     environment:
-      - NODE_ENV=production
+      - FUSEKI_URL=http://fuseki:3030
+      - FUSEKI_DATASET=ds
 
-volumes:
-  data_volume:
+  fuseki:
+    image: stain/jena-fuseki
+    ports:
+      - "3030:3030"
+    environment:
+      - ADMIN_PASSWORD=your_admin_password
+      - JVM_ARGS=-Xmx2g
+    volumes:
+      - ./fuseki-data:/fuseki
+      - ./config.ttl:/fuseki/config.ttl
+    command: "--config=/fuseki/config.ttl"
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+      - fuseki

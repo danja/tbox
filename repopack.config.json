@@ -1,0 +1,16 @@
+{
+    "output": {
+        "filePath": "./tbox-repopack.txt",
+        "headerText": "tbox source code",
+        "removeComments": true
+    },
+    "ignore": {
+        "useDefaultPatterns": true,
+        "customPatterns": [
+            "*.log",
+            "**/jsdoc",
+            "**/media",
+            "**/*repopack*"
+        ]
+    }
+}
