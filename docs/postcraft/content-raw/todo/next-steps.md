@@ -1,3 +1,4 @@
 # tbox Next Steps
 
-#:todo add Fuseki
+- add Fuseki
+- node-xmpp-server
