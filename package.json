@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "rp": "repopack -c repopack.config.json .",
+    "rp": "repomix -c repomix.config.json .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
