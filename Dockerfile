@@ -20,7 +20,7 @@ RUN mkdir -p /home/myuser/app /home/myuser/data
 WORKDIR /home/myuser/app
 
 # Copy package.json and package-lock.json (if available)
-COPY app/package*.json ./
+COPY package*.json ./
 
 # Install Node.js dependencies
 RUN npm install && chown -R myuser:myuser /home/myuser/app

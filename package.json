@@ -12,5 +12,8 @@
   },
   "keywords": [],
   "author": "Danny Ayers",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
 }

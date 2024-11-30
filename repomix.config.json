@@ -9,6 +9,8 @@
         "customPatterns": [
             "docs",
             "**/_*",
+            "fuseki-data",
+            "node_modules",
             ".git",
             "*.log",
             "**/jsdoc",
