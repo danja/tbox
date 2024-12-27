@@ -1,3 +1,23 @@
+Here are the key commands to rebuild from scratch:
+
+Stop and remove all containers/volumes:
+
+bashCopydocker-compose down --volumes
+
+Rebuild without using cache:
+
+bashCopydocker-compose build --no-cache
+
+Start everything up:
+
+docker-compose up -d
+
+Check logs for issues:
+
+bashCopydocker-compose logs
+These commands are actually stored in restart.sh in your project.
+The monitor dashboard will be available at http://localhost:4040 once everything is up.
+
 Restart:
 http://localhost:4000/
 http://localhost:4030/ - Fuseki
