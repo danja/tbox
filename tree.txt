@@ -1,0 +1,273 @@
+.
+├── about.md
+├── app
+│   ├── app.js
+│   └── node.log
+├── _bad-pack-script_pork.sh
+├── certs
+│   ├── localhost.crt
+│   └── localhost.key
+├── config
+│   └── prosody
+│       ├── certs
+│       └── prosody.cfg.lua
+├── config.ttl
+├── data
+│   └── prosody
+│       └── http_upload
+├── default.conf
+├── docker-compose.yml
+├── Dockerfile
+├── docs
+│   └── postcraft
+│       ├── cache
+│       ├── content-raw
+│       │   ├── articles
+│       │   │   ├── about.md
+│       │   │   ├── quickstart-guide_claude.md
+│       │   │   └── readme.md
+│       │   ├── entries
+│       │   │   ├── 2023-10-27_hello.md
+│       │   │   └── 20244-10-22_purple.md
+│       │   ├── journal
+│       │   └── todo
+│       │       └── next-steps.md
+│       ├── content-static
+│       │   └── references
+│       ├── layouts
+│       │   ├── fancier
+│       │   │   └── Cinzel
+│       │   │       └── fonts
+│       │   │           ├── Cinzel-VariableFont_wght.ttf
+│       │   │           ├── OFL.txt
+│       │   │           ├── README.txt
+│       │   │           └── static
+│       │   │               ├── Cinzel-Black.ttf
+│       │   │               ├── Cinzel-Bold.ttf
+│       │   │               ├── Cinzel-ExtraBold.ttf
+│       │   │               ├── Cinzel-Medium.ttf
+│       │   │               ├── Cinzel-Regular.ttf
+│       │   │               └── Cinzel-SemiBold.ttf
+│       │   ├── inspiration.md
+│       │   ├── logos
+│       │   │   ├── logo-big.png
+│       │   │   ├── logo-invert.bmp
+│       │   │   ├── logo-invert.png
+│       │   │   └── logo.png
+│       │   ├── mediocre
+│       │   │   ├── about.md
+│       │   │   ├── css
+│       │   │   │   ├── fonts.css
+│       │   │   │   ├── grid-columns-bad.css
+│       │   │   │   ├── grid-columns.css
+│       │   │   │   └── style.css
+│       │   │   ├── fonts
+│       │   │   │   ├── lora-bolditalic-webfont.woff
+│       │   │   │   ├── lora-bolditalic-webfont.woff2
+│       │   │   │   ├── lora-bold-webfont.woff
+│       │   │   │   ├── lora-bold-webfont.woff2
+│       │   │   │   ├── lora-italic-webfont.woff
+│       │   │   │   ├── lora-italic-webfont.woff2
+│       │   │   │   ├── lora-regular-webfont.woff
+│       │   │   │   ├── lora-regular-webfont.woff2
+│       │   │   │   ├── Roboto-Bold-webfont.woff
+│       │   │   │   ├── RobotoCondensed-Regular-webfont.woff
+│       │   │   │   └── Roboto-Regular-webfont.woff
+│       │   │   ├── js
+│       │   │   ├── layout-sample.html
+│       │   │   └── templates
+│       │   │       ├── entry-content_template.njk
+│       │   │       ├── entry-page_template.njk
+│       │   │       └── index-page_template.njk
+│       │   ├── misc
+│       │   │   ├── BITS.TXT
+│       │   │   ├── butler-columns.css
+│       │   │   ├── butler-orig.css
+│       │   │   ├── grid-version.txt
+│       │   │   └── holy-grail.html
+│       │   ├── reset.css
+│       │   └── trials
+│       │       ├── boilerplate.html
+│       │       ├── butler.html
+│       │       ├── grid-10.html
+│       │       ├── grid-2.html
+│       │       ├── grid-3.html
+│       │       ├── grid-4.html
+│       │       ├── grid-5.html
+│       │       ├── grid-6.html
+│       │       ├── grid-7.html
+│       │       ├── grid-7-nearly-prompt.html
+│       │       ├── grid-8.html
+│       │       ├── grid-for-prompt.html
+│       │       └── grid-w3c.html
+│       ├── manifest.ttl
+│       ├── media
+│       │   └── images
+│       │       └── 2024-04
+│       │           └── internet-fad.jpeg
+│       ├── prompts
+│       │   ├── 2024-10-06_prompt-01.md
+│       │   ├── about.md
+│       │   └── system-prompt.md
+│       └── public
+├── fuseki-data
+│   ├── backups
+│   ├── config.ttl
+│   ├── configuration
+│   │   └── test.ttl
+│   ├── databases
+│   │   ├── ds
+│   │   │   ├── Data-0001
+│   │   │   │   ├── GOSP.bpt
+│   │   │   │   ├── GOSP.dat
+│   │   │   │   ├── GOSP.idn
+│   │   │   │   ├── GPOS.bpt
+│   │   │   │   ├── GPOS.dat
+│   │   │   │   ├── GPOS.idn
+│   │   │   │   ├── GPU.bpt
+│   │   │   │   ├── GPU.dat
+│   │   │   │   ├── GPU.idn
+│   │   │   │   ├── GSPO.bpt
+│   │   │   │   ├── GSPO.dat
+│   │   │   │   ├── GSPO.idn
+│   │   │   │   ├── journal.jrnl
+│   │   │   │   ├── nodes.bpt
+│   │   │   │   ├── nodes.dat
+│   │   │   │   ├── nodes-data.bdf
+│   │   │   │   ├── nodes-data.obj
+│   │   │   │   ├── nodes.idn
+│   │   │   │   ├── OSP.bpt
+│   │   │   │   ├── OSP.dat
+│   │   │   │   ├── OSPG.bpt
+│   │   │   │   ├── OSPG.dat
+│   │   │   │   ├── OSPG.idn
+│   │   │   │   ├── OSP.idn
+│   │   │   │   ├── POS.bpt
+│   │   │   │   ├── POS.dat
+│   │   │   │   ├── POSG.bpt
+│   │   │   │   ├── POSG.dat
+│   │   │   │   ├── POSG.idn
+│   │   │   │   ├── POS.idn
+│   │   │   │   ├── prefixes.bpt
+│   │   │   │   ├── prefixes.dat
+│   │   │   │   ├── prefixes-data.bdf
+│   │   │   │   ├── prefixes-data.obj
+│   │   │   │   ├── prefixes.idn
+│   │   │   │   ├── SPO.bpt
+│   │   │   │   ├── SPO.dat
+│   │   │   │   ├── SPOG.bpt
+│   │   │   │   ├── SPOG.dat
+│   │   │   │   ├── SPOG.idn
+│   │   │   │   ├── SPO.idn
+│   │   │   │   └── tdb.lock
+│   │   │   └── tdb.lock
+│   │   └── test
+│   │       ├── Data-0001
+│   │       │   ├── GOSP.bpt
+│   │       │   ├── GOSP.dat
+│   │       │   ├── GOSP.idn
+│   │       │   ├── GPOS.bpt
+│   │       │   ├── GPOS.dat
+│   │       │   ├── GPOS.idn
+│   │       │   ├── GPU.bpt
+│   │       │   ├── GPU.dat
+│   │       │   ├── GPU.idn
+│   │       │   ├── GSPO.bpt
+│   │       │   ├── GSPO.dat
+│   │       │   ├── GSPO.idn
+│   │       │   ├── journal.jrnl
+│   │       │   ├── nodes.bpt
+│   │       │   ├── nodes.dat
+│   │       │   ├── nodes-data.bdf
+│   │       │   ├── nodes-data.obj
+│   │       │   ├── nodes.idn
+│   │       │   ├── OSP.bpt
+│   │       │   ├── OSP.dat
+│   │       │   ├── OSPG.bpt
+│   │       │   ├── OSPG.dat
+│   │       │   ├── OSPG.idn
+│   │       │   ├── OSP.idn
+│   │       │   ├── POS.bpt
+│   │       │   ├── POS.dat
+│   │       │   ├── POSG.bpt
+│   │       │   ├── POSG.dat
+│   │       │   ├── POSG.idn
+│   │       │   ├── POS.idn
+│   │       │   ├── prefixes.bpt
+│   │       │   ├── prefixes.dat
+│   │       │   ├── prefixes-data.bdf
+│   │       │   ├── prefixes-data.obj
+│   │       │   ├── prefixes.idn
+│   │       │   ├── SPO.bpt
+│   │       │   ├── SPO.dat
+│   │       │   ├── SPOG.bpt
+│   │       │   ├── SPOG.dat
+│   │       │   ├── SPOG.idn
+│   │       │   ├── SPO.idn
+│   │       │   └── tdb.lock
+│   │       └── tdb.lock
+│   ├── logs
+│   ├── shiro.ini
+│   ├── system
+│   │   ├── GOSP.dat
+│   │   ├── GOSP.idn
+│   │   ├── GPOS.dat
+│   │   ├── GPOS.idn
+│   │   ├── GSPO.dat
+│   │   ├── GSPO.idn
+│   │   ├── journal.jrnl
+│   │   ├── node2id.dat
+│   │   ├── node2id.idn
+│   │   ├── nodes.dat
+│   │   ├── OSP.dat
+│   │   ├── OSPG.dat
+│   │   ├── OSPG.idn
+│   │   ├── OSP.idn
+│   │   ├── POS.dat
+│   │   ├── POSG.dat
+│   │   ├── POSG.idn
+│   │   ├── POS.idn
+│   │   ├── prefix2id.dat
+│   │   ├── prefix2id.idn
+│   │   ├── prefixes.dat
+│   │   ├── prefixIdx.dat
+│   │   ├── prefixIdx.idn
+│   │   ├── SPO.dat
+│   │   ├── SPOG.dat
+│   │   ├── SPOG.idn
+│   │   ├── SPO.idn
+│   │   ├── tdb.cfg
+│   │   └── tdb.lock
+│   ├── system_files
+│   │   └── 01e1b390-2d95-11b2-8038-0242c0a83002
+│   └── templates
+│       ├── config-mem
+│       ├── config-tdb
+│       ├── config-tdb2
+│       ├── config-tdb2-dir
+│       ├── config-tdb2-mem
+│       ├── config-tdb-dir
+│       └── config-tdb-mem
+├── LICENSE
+├── logs
+│   ├── app
+│   ├── fuseki
+│   └── nginx
+│       ├── access.log
+│       └── error.log
+├── monitor
+│   ├── Dockerfile
+│   └── index.js
+├── nginx.conf
+├── package.json
+├── prosody-data
+├── prosody-uploads
+├── README.md
+├── repomix.config.json
+├── restart.sh
+├── _setup-and-run-script.sh
+├── tbox-repomix.txt
+├── test_fuseki-persistence.sh
+└── tree.txt
+
+57 directories, 214 files

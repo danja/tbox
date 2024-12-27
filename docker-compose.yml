@@ -9,6 +9,11 @@ services:
     environment:
       - FUSEKI_URL=http://fuseki:3030
       - FUSEKI_DATASET=ds
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8311/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   fuseki:
     image: stain/jena-fuseki
@@ -57,3 +62,16 @@ services:
       timeout: 10s
       retries: 3
     restart: unless-stopped
+
+  monitor:
+    build:
+      context: ./monitor
+      dockerfile: Dockerfile
+    ports:
+      - "4040:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    depends_on:
+      - app
+      - fuseki
+      - xmpp

@@ -1,6 +1,6 @@
 {
     "output": {
-        "filePath": "./tbox-repopack.txt",
+        "filePath": "./tbox-repomix.txt",
         "headerText": "tbox source code",
         "removeComments": false
     },
@@ -15,7 +15,7 @@
             "*.log",
             "**/jsdoc",
             "**/media",
-            "**/*repopack*"
+            "**/*repomix*"
         ]
     }
 }

@@ -12,4 +12,12 @@ app.get('/', (req, res) => {
     `);
 });
 
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'ok',
+        time: new Date(),
+        uptime: process.uptime()
+    });
+});
+
 app.listen(port, '0.0.0.0', () => console.log(`Server running on port ${port}`));

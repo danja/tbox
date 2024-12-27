@@ -4,6 +4,8 @@ http://localhost:4030/ - Fuseki
 http://localhost:4080/
 
 ```sh
+ docker-compose up --build
+
 docker-compose down --volumes  # Remove containers and volumes
 docker-compose build --no-cache  # Rebuild without cache
 docker-compose up -d  # Start fresh
@@ -19,3 +21,5 @@ curl -X GET http://localhost:4030/test/query \
   -H "Authorization: Basic $(echo -n 'admin:admin123' | base64)" \
   --data-urlencode "query=SELECT * WHERE { ?s ?p ?o }"
 ```
+
+Access monitor dashboard at http://localhost:4040
