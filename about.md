@@ -1,3 +1,10 @@
+next steps are in
+
+/home/danny/github-danny/hyperdata/packages/tbox/docs/artifacts_2024-12-28
+
+docker-compose restart monitor will restart just the monitor service with updated index.js.
+For a complete rebuild: docker-compose up -d --build monitor
+
 Here are the key commands to rebuild from scratch:
 
 Stop and remove all containers/volumes:

@@ -24,7 +24,7 @@ const checkFusekiHealth = async () => {
 
 const checkProsodyHealth = async () => {
     try {
-        const response = await fetch('http://xmpp:5280/http-monitor', {
+        const response = await fetch('http://xmpp:5282/http-monitor', {
             timeout: 5000
         });
         return {

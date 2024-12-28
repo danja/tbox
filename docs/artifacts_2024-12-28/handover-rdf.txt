@@ -1,0 +1,31 @@
+@prefix : <http://example.org/tbox#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix status: <http://example.org/status/> .
+
+:TBoxProject a doap:Project ;
+    dct:title "TBox Intelligent Agent Environment" ;
+    dct:description "Docker-based environment for intelligent agents with XMPP communication and RDF storage" ;
+    doap:version "0.1.0" ;
+    :status status:InDevelopment ;
+    :components (
+        "Nginx"
+        "Prosody XMPP"
+        "Apache Fuseki"
+        "Node.js App"
+        "Monitor Service"
+    ) ;
+    :keywords (
+        "Docker"
+        "XMPP"
+        "RDF"
+        "Monitoring"
+        "DevOps"
+        "Microservices"
+    ) ;
+    :nextActions (
+        "Implement Backups"
+        "Add Monitoring UI"
+        "Automate SSL"
+        "Enhance Error Handling"
+    ) .

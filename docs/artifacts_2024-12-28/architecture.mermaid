@@ -1,0 +1,46 @@
+graph TB
+    subgraph Internet
+        EXT[External Clients]
+        DNS[DNS strandz.it]
+    end
+
+    subgraph Docker Network tbox_net
+        subgraph Profiles ["Profiles (dev/prod)"]
+            subgraph Core Services
+                NGINX[Nginx Container]
+                XMPP[Prosody XMPP]
+                KB[Fuseki KB]
+                APP[Node App]
+            end
+            MON[Monitor]
+        end
+        
+        subgraph Config
+            ENV[Environment Files]
+            COMP[docker-compose.yml]
+            HC[Health Checks]
+        end
+
+        subgraph Volumes
+            DATA[Persistent Data]
+            CERTS[SSL Certificates]
+        end
+    end
+
+    EXT --> DNS
+    DNS --> NGINX
+    NGINX --> XMPP
+    NGINX --> KB
+    NGINX --> APP
+    
+    MON --> XMPP
+    MON --> KB
+    MON --> APP
+    
+    HC --> NGINX
+    ENV --> COMP
+    COMP --> Profiles
+    
+    DATA --> KB
+    DATA --> XMPP
+    CERTS --> NGINX
