@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   node-ssh:
     build: .
@@ -6,9 +6,19 @@ services:
       - "2222:22"
     volumes:
       - ./repositories:/repositories
+      - ./ecosystem.config.js:/app/ecosystem.config.js
       - node_modules:/repositories/node_modules
       - npm_cache:/root/.npm
       - ssh_config:/root/.ssh
+    environment:
+      - PM2_PUBLIC_KEY=${PM2_PUBLIC_KEY}
+      - PM2_SECRET_KEY=${PM2_SECRET_KEY}
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "pm2", "pid", "app"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   node_modules:

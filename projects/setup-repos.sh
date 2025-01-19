@@ -17,3 +17,9 @@ for repo in "${REPOS[@]}"; do
     cd ..
   fi
 done
+
+# Ensure PM2 has correct permissions
+chown -R node:node /app
+
+# Start services using PM2
+pm2 start /app/ecosystem.config.js --no-daemon
