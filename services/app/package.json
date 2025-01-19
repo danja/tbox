@@ -1,0 +1,12 @@
+{
+    "name": "tbox-app",
+    "version": "1.0.0",
+    "description": "TBox Application Service",
+    "main": "src/app.js",
+    "dependencies": {
+        "express": "^4.21.2"
+    },
+    "scripts": {
+        "start": "node src/app.js"
+    }
+}

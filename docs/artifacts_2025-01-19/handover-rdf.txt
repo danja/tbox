@@ -1,0 +1,64 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix status: <http://example.org/status/> .
+@prefix service: <http://example.org/service/> .
+@prefix task: <http://example.org/task/> .
+
+<http://example.org/project/tbox>
+    a status:Project ;
+    dc:title "TBox Migration Project" ;
+    dc:date "2025-01-19"^^xsd:date ;
+    status:currentPhase "Migration In Progress" ;
+    status:priority "High" ;
+    status:hasService service:monitor, service:nginx, service:fuseki, service:xmpp .
+
+service:monitor
+    a service:Component ;
+    status:state "Failed" ;
+    status:issue "Module Loading Error" ;
+    status:port "4040" ;
+    status:nextTask task:fixModuleLoading .
+
+service:nginx
+    a service:Component ;
+    status:state "Partial" ;
+    status:issue "Missing Web Content" ;
+    status:port "4080" ;
+    status:nextTask task:setupWebRoot .
+
+service:fuseki
+    a service:Component ;
+    status:state "Unknown" ;
+    status:port "4030" ;
+    status:nextTask task:verifyPersistence .
+
+service:xmpp
+    a service:Component ;
+    status:state "Untested" ;
+    status:ports "5222,5269,5280,5282" ;
+    status:nextTask task:configureSSL .
+
+task:fixModuleLoading
+    a status:Task ;
+    status:priority "High" ;
+    status:description "Fix module loading in monitor service" ;
+    status:dependsOn task:verifyPackageJson .
+
+task:setupWebRoot
+    a status:Task ;
+    status:priority "Medium" ;
+    status:description "Setup nginx web root content" .
+
+task:verifyPersistence
+    a status:Task ;
+    status:priority "High" ;
+    status:description "Verify data persistence for all services" .
+
+task:configureSSL
+    a status:Task ;
+    status:priority "Medium" ;
+    status:description "Configure SSL certificates for XMPP" .
+
+status:Project
+    rdfs:label "Migration Project Status" .

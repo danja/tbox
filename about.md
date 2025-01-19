@@ -1,3 +1,11 @@
+````sh
+cd ~/github-danny/hyperdata/packages/tbox # my local dir
+
+```
+
+`docs/artifacts_2025-01-19`
+
+---
 next steps are in
 
 /home/danny/github-danny/hyperdata/packages/tbox/docs/artifacts_2024-12-28
@@ -47,6 +55,6 @@ curl -X GET http://localhost:4030/test/query \
   -H "Accept: application/sparql-results+json" \
   -H "Authorization: Basic $(echo -n 'admin:admin123' | base64)" \
   --data-urlencode "query=SELECT * WHERE { ?s ?p ?o }"
-```
+````
 
 Access monitor dashboard at http://localhost:4040

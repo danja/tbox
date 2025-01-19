@@ -1,0 +1,16 @@
+version: '3'
+services:
+  node-ssh:
+    build: .
+    ports:
+      - "2222:22"
+    volumes:
+      - ./repositories:/repositories
+      - node_modules:/repositories/node_modules
+      - npm_cache:/root/.npm
+      - ssh_config:/root/.ssh
+
+volumes:
+  node_modules:
+  npm_cache:
+  ssh_config:

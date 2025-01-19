@@ -1,7 +1,8 @@
 version: "3"
 services:
   app:
-    build: .
+    build:
+      context: ./services/app
     ports:
       - "4000:8311"
     depends_on:
@@ -24,15 +25,16 @@ services:
       - FUSEKI_DATASET_1=ds
       - FUSEKI_DATASET_ds=/fuseki/databases/ds
     volumes:
-      - ./fuseki-data:/fuseki
-      - ./config.ttl:/fuseki/config.ttl
+      - ./data/fuseki:/fuseki
+      - ./config/fuseki/config.ttl:/fuseki/config.ttl
 
   nginx:
     image: nginx:alpine
     ports:
       - "4080:4080"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./services/web/public:/usr/share/nginx/html:ro
     depends_on:
       - app
       - fuseki
@@ -43,15 +45,15 @@ services:
       - "5222:5222"
       - "5269:5269"
       - "5280:5280"
-      - "5282:5282" # Monitoring endpoint
+      - "5282:5282"
     volumes:
-      - ./prosody-uploads:/var/lib/prosody/http_upload
+      - ./data/uploads:/var/lib/prosody/http_upload
       - ./config/prosody/prosody.cfg.lua:/etc/prosody/prosody.cfg.lua:ro
-      - ./config/prosody/certs:/etc/prosody/certs:ro
+      - ./config/certs:/etc/prosody/certs:ro
       - ./data/prosody:/var/lib/prosody
     environment:
       - PROSODY_GENERATE_CERTS=true
-      - PROSODY_MAX_UPLOAD_SIZE=104857600 # 100MB
+      - PROSODY_MAX_UPLOAD_SIZE=104857600
       - PROSODY_ADMIN_JID=admin@localhost
       - PROSODY_ADMIN_PASSWORD=admin123
       - PROSODY_MONITORING=true
@@ -65,8 +67,7 @@ services:
 
   monitor:
     build:
-      context: ./monitor
-      dockerfile: Dockerfile
+      context: ./services/monitor
     ports:
       - "4040:8080"
     volumes:

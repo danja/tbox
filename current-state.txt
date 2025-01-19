@@ -1,0 +1,7 @@
+     Name                   Command                 State      Ports
+--------------------------------------------------------------------
+tbox_app_1       /start.sh                        Exit 137          
+tbox_fuseki_1    /docker-entrypoint.sh /jen ...   Exit 137          
+tbox_monitor_1   docker-entrypoint.sh node  ...   Exit 137          
+tbox_nginx_1     /docker-entrypoint.sh ngin ...   Exit 0            
+tbox_xmpp_1      /entrypoint.sh prosody -F        Restarting        

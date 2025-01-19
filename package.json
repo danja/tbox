@@ -1,21 +1,25 @@
 {
   "name": "tbox",
   "version": "1.0.0",
-  "description": "a minimal Docker-contained environment, primarily for Transmissions",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
+  "description": "Docker-contained environment for hyperdata.it apps",
+  "private": true,
+  "workspaces": [
+    "services/*"
+  ],
   "scripts": {
-    "rp": "repomix -c repomix.config.json .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "docker-compose up",
+    "build": "docker-compose build",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "clean": "docker-compose down --volumes",
+    "rp": "repomix -c repomix.config.json ."
   },
-  "keywords": [],
+  "keywords": [
+    "docker",
+    "fuseki",
+    "prosody",
+    "nginx"
+  ],
   "author": "Danny Ayers",
-  "license": "MIT",
-  "dependencies": {
-    "dockerode": "^4.0.2",
-    "express": "^4.21.2",
-    "node-fetch": "^3.3.2"
-  }
+  "license": "MIT"
 }
