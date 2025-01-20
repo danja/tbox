@@ -3,8 +3,8 @@ cd /repositories
 
 # Define repos to clone
 REPOS=(
-  "user/repo1"
-  "user/repo2"
+  "danja/semem"
+  "danja/transmissions"
 )
 
 # Clone and install each repo

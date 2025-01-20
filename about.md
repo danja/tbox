@@ -5,6 +5,20 @@ cd ~/github-danny/hyperdata/packages/tbox # my local dir
 
 `docs/artifacts_2025-01-19`
 
+docker-compose build --no-cache
+docker-compose up -d
+
+# Make setup script executable
+chmod +x projects/setup-repos.sh
+
+# Build and start containers
+docker-compose up --build -d
+
+# Check logs
+docker-compose logs -f
+
+docker-compose down
+
 ---
 next steps are in
 
