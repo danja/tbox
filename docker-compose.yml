@@ -6,6 +6,7 @@ services:
       - "2222:22"
     volumes:
       - ./shared_data:/shared_data
+
   app:
     build:
       context: ./services/app
@@ -22,23 +23,14 @@ services:
     ports:
       - "4030:3030"
     volumes:
-      - ./data/fuseki:/fuseki
-      - ./config/fuseki/config.ttl:/fuseki/config.ttl
-      - ./config/fuseki/shiro.ini:/fuseki/shiro.ini
-
+      - ./data/fuseki:/fuseki/databases
     environment:
       - ADMIN_PASSWORD=admin123
       - FUSEKI_DATASET_1=ds
-      - FUSEKI_DATASET_2=test-mem
+      - FUSEKI_DATASET_2=semem
       - FUSEKI_DATASET_3=test-db
-      - FUSEKI_DATASET_4=semem
-
-    command:
-      [
-        "/bin/sh",
-        "-c",
-        "rm -f /fuseki/system/tdb.lock /fuseki/databases/*/tdb.lock && /jena-fuseki/fuseki-server",
-      ]
+      - FUSEKI_DATASET_4=test-mem
+      - JVM_ARGS=-Xmx2g
 
   nginx:
     image: nginx:alpine

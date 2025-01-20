@@ -1,4 +1,11 @@
 fuseki-data
+fuseki/databases
+fuseki/storees
+data
+data/fuseki
+data/fuseki/semem
+data/fuseki/ds
+data/fuseki/test-db
 
 # Logs
 logs
