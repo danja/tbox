@@ -1,7 +1,31 @@
-````sh
+```sh
 cd ~/github-danny/hyperdata/packages/tbox # my local dir
-
+docker-compose up -d
 ```
+
+```sh
+cd ~/github-danny/hyperdata/packages/tbox # my local dir
+docker-compose down
+docker-compose build --no-cache
+rm logs/startup.log
+docker-compose up -d
+docker-compose logs -f > logs/startup.log
+```
+
+```sh
+ssh root@localhost -p 2222
+```
+
+check syntax :
+
+```sh
+cd ~/github-danny/hyperdata/packages/tbox/config/fuseki
+rapper -c -i turtle config.ttl
+```
+
+docker run -d -p 2222:22 your-image-name
+
+---
 
 `docs/artifacts_2025-01-19`
 
@@ -9,17 +33,21 @@ docker-compose build --no-cache
 docker-compose up -d
 
 # Make setup script executable
+
 chmod +x projects/setup-repos.sh
 
 # Build and start containers
+
 docker-compose up --build -d
 
 # Check logs
+
 docker-compose logs -f
 
 docker-compose down
 
 ---
+
 next steps are in
 
 /home/danny/github-danny/hyperdata/packages/tbox/docs/artifacts_2024-12-28
@@ -69,6 +97,6 @@ curl -X GET http://localhost:4030/test/query \
   -H "Accept: application/sparql-results+json" \
   -H "Authorization: Basic $(echo -n 'admin:admin123' | base64)" \
   --data-urlencode "query=SELECT * WHERE { ?s ?p ?o }"
-````
+```
 
 Access monitor dashboard at http://localhost:4040

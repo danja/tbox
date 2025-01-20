@@ -1,173 +1,0 @@
-Attaching to tbox_monitor_1, tbox_nginx_1, tbox_app_1, tbox_fuseki_1, tbox_xmpp_1
-[36mapp_1      |[0m Server running on port 8311
-[33mfuseki_1   |[0m Get:1 http://security.debian.org/debian-security buster/updates InRelease [34.8 kB]
-[33mfuseki_1   |[0m Get:2 http://deb.debian.org/debian buster InRelease [122 kB]
-[33mfuseki_1   |[0m Get:3 http://deb.debian.org/debian buster-updates InRelease [56.6 kB]
-[33mfuseki_1   |[0m Get:4 http://security.debian.org/debian-security buster/updates/main amd64 Packages [610 kB]
-[33mfuseki_1   |[0m Get:5 http://deb.debian.org/debian buster/main amd64 Packages [7909 kB]
-[33mfuseki_1   |[0m Get:6 http://deb.debian.org/debian buster-updates/main amd64 Packages [8788 B]
-[33mfuseki_1   |[0m Fetched 8741 kB in 4s (1991 kB/s)
-[35mnginx_1    |[0m /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
-[35mnginx_1    |[0m /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
-[35mnginx_1    |[0m /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-[35mnginx_1    |[0m 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
-[35mnginx_1    |[0m 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
-[35mnginx_1    |[0m /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
-[35mnginx_1    |[0m /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
-[35mnginx_1    |[0m /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
-[35mnginx_1    |[0m /docker-entrypoint.sh: Configuration complete; ready for start up
-[32mmonitor_1  |[0m Monitor service running on port 8080
-[33mfuseki_1   |[0m Reading package lists...
-[34mxmpp_1     |[0m usermod: UID '0' already exists
-[34mxmpp_1     |[0m usermod: UID '0' already exists
-[34mxmpp_1     |[0m usermod: UID '0' already exists
-[34mxmpp_1     |[0m usermod: UID '0' already exists
-[34mxmpp_1     |[0m usermod: UID '0' already exists
-[34mxmpp_1     |[0m usermod: UID '0' already exists
-[33mfuseki_1   |[0m Reading package lists...
-[33mfuseki_1   |[0m Building dependency tree...
-[33mfuseki_1   |[0m Reading state information...
-[33mfuseki_1   |[0m The following additional packages will be installed:
-[33mfuseki_1   |[0m   libgpm2 libncurses6 libncursesw6 libprocps7 libtinfo6 psmisc
-[33mfuseki_1   |[0m Suggested packages:
-[33mfuseki_1   |[0m   gpm
-[33mfuseki_1   |[0m The following NEW packages will be installed:
-[33mfuseki_1   |[0m   libgpm2 libncurses6 libprocps7 procps psmisc
-[33mfuseki_1   |[0m The following packages will be upgraded:
-[33mfuseki_1   |[0m   libncursesw6 libtinfo6
-[33mfuseki_1   |[0m 2 upgraded, 5 newly installed, 0 to remove and 60 not upgraded.
-[33mfuseki_1   |[0m Need to get 1042 kB of archives.
-[33mfuseki_1   |[0m After this operation, 1932 kB of additional disk space will be used.
-[33mfuseki_1   |[0m Get:1 http://security.debian.org/debian-security buster/updates/main amd64 libtinfo6 amd64 6.1+20181013-2+deb10u5 [326 kB]
-[33mfuseki_1   |[0m Get:2 http://deb.debian.org/debian buster/main amd64 libprocps7 amd64 2:3.3.15-2 [61.7 kB]
-[33mfuseki_1   |[0m Get:3 http://deb.debian.org/debian buster/main amd64 procps amd64 2:3.3.15-2 [259 kB]
-[33mfuseki_1   |[0m Get:4 http://deb.debian.org/debian buster/main amd64 libgpm2 amd64 1.20.7-5 [35.1 kB]
-[33mfuseki_1   |[0m Get:5 http://security.debian.org/debian-security buster/updates/main amd64 libncursesw6 amd64 6.1+20181013-2+deb10u5 [131 kB]
-[33mfuseki_1   |[0m Get:6 http://deb.debian.org/debian buster/main amd64 psmisc amd64 23.2-1+deb10u1 [126 kB]
-[33mfuseki_1   |[0m Get:7 http://security.debian.org/debian-security buster/updates/main amd64 libncurses6 amd64 6.1+20181013-2+deb10u5 [102 kB]
-[33mfuseki_1   |[0m debconf: delaying package configuration, since apt-utils is not installed
-[33mfuseki_1   |[0m Fetched 1042 kB in 0s (2626 kB/s)
-[33mfuseki_1   |[0m (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 7014 files and directories currently installed.)
-[33mfuseki_1   |[0m Preparing to unpack .../libtinfo6_6.1+20181013-2+deb10u5_amd64.deb ...
-[33mfuseki_1   |[0m Unpacking libtinfo6:amd64 (6.1+20181013-2+deb10u5) over (6.1+20181013-2+deb10u2) ...
-[33mfuseki_1   |[0m Setting up libtinfo6:amd64 (6.1+20181013-2+deb10u5) ...
-[33mfuseki_1   |[0m (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 7014 files and directories currently installed.)
-[33mfuseki_1   |[0m Preparing to unpack .../libncursesw6_6.1+20181013-2+deb10u5_amd64.deb ...
-[33mfuseki_1   |[0m Unpacking libncursesw6:amd64 (6.1+20181013-2+deb10u5) over (6.1+20181013-2+deb10u2) ...
-[33mfuseki_1   |[0m Setting up libncursesw6:amd64 (6.1+20181013-2+deb10u5) ...
-[33mfuseki_1   |[0m Selecting previously unselected package libncurses6:amd64.
-[33mfuseki_1   |[0m (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 7014 files and directories currently installed.)
-[33mfuseki_1   |[0m Preparing to unpack .../libncurses6_6.1+20181013-2+deb10u5_amd64.deb ...
-[33mfuseki_1   |[0m Unpacking libncurses6:amd64 (6.1+20181013-2+deb10u5) ...
-[33mfuseki_1   |[0m Selecting previously unselected package libprocps7:amd64.
-[33mfuseki_1   |[0m Preparing to unpack .../libprocps7_2%3a3.3.15-2_amd64.deb ...
-[33mfuseki_1   |[0m Unpacking libprocps7:amd64 (2:3.3.15-2) ...
-[33mfuseki_1   |[0m Selecting previously unselected package procps.
-[33mfuseki_1   |[0m Preparing to unpack .../procps_2%3a3.3.15-2_amd64.deb ...
-[33mfuseki_1   |[0m Unpacking procps (2:3.3.15-2) ...
-[33mfuseki_1   |[0m Selecting previously unselected package libgpm2:amd64.
-[33mfuseki_1   |[0m Preparing to unpack .../libgpm2_1.20.7-5_amd64.deb ...
-[33mfuseki_1   |[0m Unpacking libgpm2:amd64 (1.20.7-5) ...
-[33mfuseki_1   |[0m Selecting previously unselected package psmisc.
-[33mfuseki_1   |[0m Preparing to unpack .../psmisc_23.2-1+deb10u1_amd64.deb ...
-[33mfuseki_1   |[0m Unpacking psmisc (23.2-1+deb10u1) ...
-[33mfuseki_1   |[0m Setting up libgpm2:amd64 (1.20.7-5) ...
-[33mfuseki_1   |[0m Setting up psmisc (23.2-1+deb10u1) ...
-[33mfuseki_1   |[0m Setting up libprocps7:amd64 (2:3.3.15-2) ...
-[33mfuseki_1   |[0m Setting up libncurses6:amd64 (6.1+20181013-2+deb10u5) ...
-[33mfuseki_1   |[0m Setting up procps (2:3.3.15-2) ...
-[33mfuseki_1   |[0m update-alternatives: using /usr/bin/w.procps to provide /usr/bin/w (w) in auto mode
-[33mfuseki_1   |[0m update-alternatives: warning: skip creation of /usr/share/man/man1/w.1.gz because associated file /usr/share/man/man1/w.procps.1.gz (of link group w) doesn't exist
-[33mfuseki_1   |[0m Processing triggers for libc-bin (2.28-10) ...
-[33mfuseki_1   |[0m [2025-01-20 13:31:46] Server     INFO  Apache Jena Fuseki 3.14.0
-[33mfuseki_1   |[0m [2025-01-20 13:31:46] Config     INFO  FUSEKI_HOME=/jena-fuseki
-[33mfuseki_1   |[0m [2025-01-20 13:31:46] Config     INFO  FUSEKI_BASE=/fuseki
-[33mfuseki_1   |[0m [2025-01-20 13:31:46] Config     INFO  Shiro file: file:///fuseki/shiro.ini
-[33mfuseki_1   |[0m [2025-01-20 13:31:46] Config     INFO  Configuration file: /fuseki/config.ttl
-[34mtbox_xmpp_1 exited with code 4
-[0m[36;1mxmpp_1     |[0m usermod: UID '0' already exists
-[36;1mxmpp_1     |[0m usermod: UID '0' already exists
-[36;1mxmpp_1     |[0m usermod: UID '0' already exists
-[36;1mxmpp_1     |[0m usermod: UID '0' already exists
-[36;1mxmpp_1     |[0m usermod: UID '0' already exists
-[36;1mxmpp_1     |[0m usermod: UID '0' already exists
-[36;1mxmpp_1     |[0m usermod: UID '0' already exists
-[33mfuseki_1   |[0m [2025-01-20 13:31:47] Config     INFO  Register: /ds
-[33mfuseki_1   |[0m [2025-01-20 13:31:47] Server     INFO  Started 2025/01/20 13:31:47 UTC on port 3030
-[33mfuseki_1   |[0m [2025-01-20 13:31:47] Admin      INFO  [1] POST http://localhost:3030/$/datasets
-[33mfuseki_1   |[0m [2025-01-20 13:31:47] Admin      INFO  [1] Create database : name = /fuseki/databases/ds
-[33mfuseki_1   |[0m [2025-01-20 13:31:47] Admin      WARN  [1] Runtime IO Exception (client left?) RC = 500 : java.io.FileNotFoundException: /fuseki/configuration/fuseki/databases/ds.ttl (Is a directory)
-[33mfuseki_1   |[0m Error 500: java.io.FileNotFoundException: /fuseki/configuration/fuseki/databases/ds.ttl (Is a directory)
-[33mfuseki_1   |[0m [2025-01-20 13:31:47] Admin      INFO  [1] 500 java.io.FileNotFoundException: /fuseki/configuration/fuseki/databases/ds.ttl (Is a directory) (52 ms)
-[33mfuseki_1   |[0m [2025-01-20 13:31:47] Admin      INFO  [2] POST http://localhost:3030/$/datasets
-[33mfuseki_1   |[0m Error 409: Name already registered /ds
-[33mfuseki_1   |[0m [2025-01-20 13:31:47] Admin      INFO  [2] 409 Name already registered /ds (8 ms)
-[36;1mtbox_xmpp_1 exited with code 4
-[0m[33;1mxmpp_1     |[0m usermod: UID '0' already exists
-[33;1mxmpp_1     |[0m usermod: UID '0' already exists
-[33;1mxmpp_1     |[0m usermod: UID '0' already exists
-[33;1mxmpp_1     |[0m usermod: UID '0' already exists
-[33;1mxmpp_1     |[0m usermod: UID '0' already exists
-[33;1mxmpp_1     |[0m usermod: UID '0' already exists
-[33;1mxmpp_1     |[0m usermod: UID '0' already exists
-[33;1mxmpp_1     |[0m usermod: UID '0' already exists
-[33;1mtbox_xmpp_1 exited with code 4
-[0m[32;1mxmpp_1     |[0m usermod: UID '0' already exists
-[32;1mxmpp_1     |[0m usermod: UID '0' already exists
-[32;1mxmpp_1     |[0m usermod: UID '0' already exists
-[32;1mxmpp_1     |[0m usermod: UID '0' already exists
-[32;1mxmpp_1     |[0m usermod: UID '0' already exists
-[32;1mxmpp_1     |[0m usermod: UID '0' already exists
-[32;1mxmpp_1     |[0m usermod: UID '0' already exists
-[32;1mxmpp_1     |[0m usermod: UID '0' already exists
-[32;1mxmpp_1     |[0m usermod: UID '0' already exists
-[32;1mtbox_xmpp_1 exited with code 4
-[0m[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mxmpp_1     |[0m usermod: UID '0' already exists
-[35;1mtbox_xmpp_1 exited with code 4
-[0m[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mxmpp_1     |[0m usermod: UID '0' already exists
-[34;1mtbox_xmpp_1 exited with code 4
-[0m[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mxmpp_1     |[0m usermod: UID '0' already exists
-[36mtbox_xmpp_1 exited with code 4
-[0m[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
-[33mxmpp_1     |[0m usermod: UID '0' already exists
