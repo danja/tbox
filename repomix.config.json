@@ -1,6 +1,6 @@
 {
     "output": {
-        "filePath": "./tbox-repomix.txt",
+        "filePath": "./tbox-repomix.md",
         "headerText": "tbox source code",
         "removeComments": false
     },

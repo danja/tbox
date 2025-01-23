@@ -24,12 +24,24 @@ services:
       - "4030:3030"
     volumes:
       - ./data/fuseki:/fuseki/databases
-      - ./config/fuseki:/fuseki/configuration
     environment:
       - ADMIN_PASSWORD=admin123
-      - FUSEKI_CONFIG_FILE=/fuseki/configuration/config.ttl
-      - FUSEKI_BASE=/fuseki
-      - SHIRO_INI=/fuseki/configuration/shiro.ini
+      - FUSEKI_DATASET_1=ds
+      - FUSEKI_DATASET_2=semem
+      - FUSEKI_DATASET_3=test-db
+      - FUSEKI_DATASET_4=test-mem
+      - JVM_ARGS=-Xmx2g
+
+fuseki:
+    image: stain/jena-fuseki
+    ports:
+      - "4030:3030"
+    volumes:
+      - ./data/fuseki:/fuseki/databases
+      - ./config/fuseki/config.ttl:/fuseki/config.ttl
+      - ./config/fuseki/shiro.ini:/fuseki/shiro.ini
+    environment:
+      - ADMIN_PASSWORD=admin123
       - JVM_ARGS=-Xmx2g
 
   nginx:
