@@ -1,4 +1,6 @@
-docker-compose down --volumes  # Remove containers and volumes
+# docker-compose down --volumes  # Remove containers and volumes
+
+docker-compose down
 docker-compose build --no-cache  # Rebuild without cache
 docker-compose up -d  # Start fresh
 
