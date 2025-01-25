@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'app',
-            script: './repositories/app/src/app.js',
+            script: './projects/app/src/app.js',
             instances: 1,
             autorestart: true,
             watch: false,
@@ -13,7 +13,7 @@ module.exports = {
         },
         {
             name: 'monitor',
-            script: './repositories/monitor/src/index.js',
+            script: './projects/monitor/src/index.js',
             instances: 1,
             autorestart: true,
             watch: false,
@@ -23,4 +23,4 @@ module.exports = {
             }
         }
     ]
-};
+}

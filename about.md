@@ -4,6 +4,12 @@ docker-compose up -d
 ```
 
 ```sh
+ssh semem@localhost -p 2222
+...
+exit
+```
+
+```sh
 cd ~/github-danny/hyperdata/packages/tbox # my local dir
 docker-compose down
 docker-compose build --no-cache

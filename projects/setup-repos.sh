@@ -1,25 +1,28 @@
 #!/bin/sh
-cd /repositories
+cd /home/projects || exit
 
-# Define repos to clone
-REPOS=(
-  "danja/semem"
-  "danja/transmissions"
-)
+echo "Starting repository setup..."
 
-# Clone and install each repo
-for repo in "${REPOS[@]}"; do
-  dirname=$(basename $repo)
-  if [ ! -d "$dirname" ]; then
-    git clone "https://github.com/$repo" "$dirname"
-    cd "$dirname"
-    npm install
-    cd ..
-  fi
-done
+# Clone each repository
+clone_repo() {
+    repo=$1
+    dirname=$(basename "$repo")
+    if [ ! -d "$dirname" ]; then
+        echo "Cloning $repo..."
+        git clone "https://github.com/$repo" "$dirname"
+        if [ -f "$dirname/package.json" ]; then
+            cd "$dirname" || exit
+            npm install
+            cd .. || exit
+        fi
+    fi
+}
 
-# Ensure PM2 has correct permissions
-chown -R node:node /app
+# Process each repository
+clone_repo "danja/hyperdata"
+clone_repo "danja/semem"
+clone_repo "danja/transmissions"
 
-# Start services using PM2
-pm2 start /app/ecosystem.config.js --no-daemon
+# Set permissions
+chown -R semem:semem /home/projects/*
+echo "Repository setup complete"

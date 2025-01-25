@@ -1,80 +1,108 @@
 @prefix :      <#> .
-@prefix fuseki: <http://jena.apache.org/fuseki#> .
+@prefix f: <http://jena.apache.org/fuseki#> .
 @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix tdb2:  <http://jena.apache.org/2016/tdb#> .
 @prefix ja:    <http://jena.hpl.hp.com/2005/11/Assembler#> .
 
-[] rdf:type fuseki:Server ;
-   fuseki:services (
+[] rdf:type f:Server ;
+   f:services (
      :ds
-     :semem
-     :test-db
      :test-mem
+     :test-db
+     :semem
+     :hyperdata
    ) .
 
-:test-mem rdf:type fuseki:Service ;
-    fuseki:name                     "test-mem" ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:query ;
-        fuseki:name              "query"
+:test-mem rdf:type f:Service ;
+    f:name                     "test-mem" ;
+    f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
     ] ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:update ;
-        fuseki:name              "update"
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
     ] ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:gsp-r ;
-        fuseki:name              "get"
+    f:endpoint [
+        f:operation          f:gsp-rw ;
+        f:name              "data"
     ] ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:gsp-rw ;
-        fuseki:name              "data"
-    ] ;
-    fuseki:dataset [
+    f:dataset [
         rdf:type ja:MemoryDataset
     ] .
 
-:ds rdf:type fuseki:Service ;
-    fuseki:name                     "ds" ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:query ;
-        fuseki:name              "query"
+:ds rdf:type f:Service ;
+    f:name                     "ds" ;
+    f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
     ] ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:update ;
-        fuseki:name              "update"
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
     ] ;
-    fuseki:dataset [
+    f:endpoint [
+        f:operation f:gsp_rw ;
+        f:name "data"
+    ] ;
+    f:dataset [
         rdf:type tdb2:DatasetTDB2 ;
         tdb2:location "/fuseki/databases/ds"
     ] .
 
-:semem rdf:type fuseki:Service ;
-    fuseki:name                     "semem" ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:query ;
-        fuseki:name              "query"
+:semem rdf:type f:Service ;
+    f:name                     "semem" ;
+    f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
     ] ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:update ;
-        fuseki:name              "update"
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
     ] ;
-    fuseki:dataset [
+       f:endpoint [
+        f:operation f:gsp_rw ;
+        f:name "data"
+    ] ;
+    f:dataset [
         rdf:type tdb2:DatasetTDB2 ;
         tdb2:location "/fuseki/databases/semem"
     ] .
 
-:test-db rdf:type fuseki:Service ;
-    fuseki:name                     "test-db" ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:query ;
-        fuseki:name              "query"
+:test-db rdf:type f:Service ;
+    f:name                     "test-db" ;
+    f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
     ] ;
-    fuseki:endpoint [
-        fuseki:operation          fuseki:update ;
-        fuseki:name              "update"
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
     ] ;
-    fuseki:dataset [
+       f:endpoint [
+        f:operation f:gsp_rw ;
+        f:name "data"
+    ] ;
+    f:dataset [
         rdf:type tdb2:DatasetTDB2 ;
         tdb2:location "/fuseki/databases/test-db"
+    ] .
+
+:hyperdata rdf:type f:Service ;
+    f:name "hyperdata" ;
+   f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
+    ] ;
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
+    ] ;
+    f:endpoint [
+        f:operation f:gsp_rw ;
+        f:name "data"
+    ] ;
+    f:dataset [
+        rdf:type tdb2:DatasetTDB2 ;
+        tdb2:location "/fuseki/databases/hyperdata"
     ] .
