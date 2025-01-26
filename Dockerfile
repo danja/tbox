@@ -27,7 +27,8 @@ RUN mkdir -p /home/projects && \
     chown -R semem:semem /home/projects && \
     chmod 755 /home/projects
 
-COPY projects/setup-repos.sh /usr/local/bin/
+COPY config/scripts/setup-repos.sh /usr/local/bin/
+# COPY projects/setup-repos.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup-repos.sh
 
 # Create startup script

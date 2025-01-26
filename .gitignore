@@ -1,4 +1,6 @@
-projects
+# Ignore everything in projects except .gitkeep
+projects/*
+!projects/.gitkeep
 
 fuseki-data
 fuseki/databases

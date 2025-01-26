@@ -6,6 +6,7 @@ services:
       - "2222:22"
     volumes:
       - ./projects:/home/projects
+      - ./config/scripts:/scripts:ro
       - node_modules:/home/projects/node_modules
       - npm_cache:/root/.npm
       - ssh_config:/root/.ssh

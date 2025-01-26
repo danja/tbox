@@ -1,4 +1,21 @@
 ```sh
+sudo systemctl stop tbox
+cd ~/github-danny/hyperdata/packages/tbox # my local dir
+docker-compose down
+```
+
+```sh
+docker-compose build --no-cache
+sudo systemctl start tbox.service
+```
+
+docs/howtos/tbox-autostart_2025-01-26.md
+
+```sh
+curl -X POST http://localhost:4030/hyperdata/query   -H "Authorization: Basic $(echo -n 'admin:admin123' | base64)"   -H "Content-Type: application/sparql-query"   -H "Accept: application/sparql-results+json"   --data "SELECT * WHERE { ?s ?p ?o } LIMIT 1"
+```
+
+```sh
 cd ~/github-danny/hyperdata/packages/tbox # my local dir
 docker-compose up -d
 ```
