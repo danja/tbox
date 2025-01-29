@@ -1,0 +1,30 @@
+flowchart TB
+    subgraph TBox System
+        direction TB
+        subgraph Config
+            conf["/config"]
+            nginx["/config/nginx"]
+            auth["/config/auth"]
+        end
+
+        subgraph Services
+            direction LR
+            fuseki["Fuseki Service"]
+            objstore["Object Store"]
+        end
+
+        subgraph Data
+            direction LR
+            fdata["/data/fuseki"]
+            odata["/data/objects"]
+        end
+
+        subgraph Scripts
+            backup["Backup Scripts"]
+            monitor["Monitoring"]
+        end
+    end
+
+    conf --> Services
+    Services --> Data
+    Scripts --> Services

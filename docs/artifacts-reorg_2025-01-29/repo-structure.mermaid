@@ -1,0 +1,23 @@
+flowchart TB
+    subgraph Repository
+        direction TB
+        
+        subgraph tbox["TBox Service"]
+            direction TB
+            tconf["config/"]
+            tdata["data/"]
+            tdocker["docker-compose.yml"]
+        end
+
+        subgraph objstore["Object Store Service"]
+            direction TB
+            oconf["config/"]
+            odata["data/"]
+            odocker["docker-compose.yml"]
+        end
+
+        common["Common Files"]
+    end
+
+    tbox --> deploy1["Independent Deployment"]
+    objstore --> deploy2["Independent Deployment"]
