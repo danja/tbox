@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# cd ~/github-danny/hyperdata/packages/tbox # my local dir
+# cd ~/hyperdata/tbox # my local dir
 docker-compose down
 chmod -R 777 ./data/fuseki
 docker-compose build --no-cache

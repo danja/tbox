@@ -1,6 +1,6 @@
 ```sh
 sudo systemctl stop tbox
-cd ~/github-danny/hyperdata/packages/tbox # my local dir
+cd ~/hyperdata/tbox # my local dir
 docker-compose down
 ```
 
@@ -16,7 +16,7 @@ curl -X POST http://localhost:4030/hyperdata/query   -H "Authorization: Basic $(
 ```
 
 ```sh
-cd ~/github-danny/hyperdata/packages/tbox # my local dir
+cd ~/hyperdata/tbox # my local dir
 docker-compose up -d
 ```
 
@@ -27,7 +27,7 @@ exit
 ```
 
 ```sh
-cd ~/github-danny/hyperdata/packages/tbox # my local dir
+cd ~/hyperdata/tbox # my local dir
 docker-compose down
 docker-compose build --no-cache
 rm logs/startup.log
@@ -42,7 +42,7 @@ ssh root@localhost -p 2222
 check syntax :
 
 ```sh
-cd ~/github-danny/hyperdata/packages/tbox/config/fuseki
+cd ~/hyperdata/tbox/config/fuseki
 rapper -c -i turtle config.ttl
 ```
 
