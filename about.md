@@ -1,3 +1,5 @@
+docker-compose logs -f
+
 ```sh
 sudo systemctl stop tbox
 cd ~/hyperdata/tbox # my local dir
@@ -5,8 +7,8 @@ docker-compose down
 ```
 
 ```sh
-docker-compose build --no-cache
-sudo systemctl start tbox.service
+#docker-compose build --no-cache
+#sudo systemctl start tbox.service
 ```
 
 docs/howtos/tbox-autostart_2025-01-26.md
