@@ -1,4 +1,16 @@
+docker-compose build --no-cache
+docker-compose up -d
+
+check http://localhost:4030/
+should be Fuseki
+Username: admin
+Password: admin123
+
+```
+cd ~/hyperdata/tbox # my local dir
+docker-compose up -d
 docker-compose logs -f
+```
 
 ```sh
 sudo systemctl stop tbox
