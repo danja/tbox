@@ -1,3 +1,9 @@
+
+docker-compose logs
+
+sudo systemctl start tbox
+cd ~/hyperdata/tbox # my local dir
+
 docker-compose build --no-cache
 docker-compose up -d
 
@@ -108,7 +114,7 @@ docker-compose up -d
 
 Check logs for issues:
 
-bashCopydocker-compose logs
+docker-compose logs
 These commands are actually stored in restart.sh in your project.
 The monitor dashboard will be available at http://localhost:4040 once everything is up.
 
