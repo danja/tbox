@@ -1,3 +1,7 @@
+http://localhost:4040/ - status monitor
+
+sudo systemctl stop fuseki
+sudo systemctl disable fuseki
 
 docker-compose logs
 
