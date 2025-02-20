@@ -1,3 +1,19 @@
+Issue with the Fuseki image
+
+https://github.com/stain/jena-docker/issues/34
+/etc/systemd/system/tbox.service
+
+for now
+
+```sh
+sudo systemctl stop tbox
+cd ~/hyperdata/tbox # my local dir
+docker-compose down
+docker-compose up -d
+```
+
+---
+
 http://localhost:4040/ - status monitor
 
 sudo systemctl stop fuseki
