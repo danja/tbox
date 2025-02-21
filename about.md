@@ -3,7 +3,11 @@ Issue with the Fuseki image
 https://github.com/stain/jena-docker/issues/34
 /etc/systemd/system/tbox.service
 
-for now
+need to integrate :
+https://jena.apache.org/documentation/fuseki2/fuseki-docker.html
+see `jena-fuseki-docker-5.3.0`
+
+workaround for now:
 
 ```sh
 sudo systemctl stop tbox
