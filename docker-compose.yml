@@ -60,24 +60,12 @@ services:
       - "5222:5222"
       - "5269:5269"
       - "5280:5280"
-      - "5282:5282"
     volumes:
-      - ./data/uploads:/var/lib/prosody/http_upload
       - ./config/prosody/prosody.cfg.lua:/etc/prosody/prosody.cfg.lua:ro
       - ./config/certs:/etc/prosody/certs:ro
-      - ./data/prosody:/var/lib/prosody
     environment:
-      - PROSODY_GENERATE_CERTS=true
-      - PROSODY_MAX_UPLOAD_SIZE=104857600
       - PROSODY_ADMIN_JID=admin@localhost
       - PROSODY_ADMIN_PASSWORD=admin123
-      - PROSODY_MONITORING=true
-      - PROSODY_MONITORING_PORT=5282
-    healthcheck:
-      test: ["CMD-SHELL", "prosodyctl status"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
     restart: unless-stopped
 
   monitor:

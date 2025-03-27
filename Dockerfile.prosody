@@ -1,0 +1,8 @@
+FROM prosody/prosody
+
+USER root
+RUN mkdir -p /var/lib/prosody/logs && \
+    touch /var/lib/prosody/logs/prosody.log /var/lib/prosody/logs/error.log && \
+    chown -R prosody:prosody /var/lib/prosody
+
+USER prosody
