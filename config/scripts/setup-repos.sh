@@ -22,6 +22,7 @@ clone_repo() {
 clone_repo "danja/hyperdata"
 clone_repo "danja/semem"
 clone_repo "danja/transmissions"
+clone_repo "danja/tia"
 
 # Set permissions
 chown -R semem:semem /home/projects/*
