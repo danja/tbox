@@ -23,6 +23,7 @@ clone_repo "danja/hyperdata"
 clone_repo "danja/semem"
 clone_repo "danja/transmissions"
 clone_repo "danja/tia"
+clone_repo "danja/farelo"
 
 # Install npm packages for subdirectories with package.json
 find_and_install_npm() {
