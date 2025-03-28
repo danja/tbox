@@ -14,6 +14,9 @@ RUN apk add --update --no-cache \
 # SSH Configuration
 RUN mkdir -p /var/run/sshd && \
     ssh-keygen -A && \
+    sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication.*/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
     echo "PermitRootLogin yes" >> /etc/ssh/sshd_config && \
     echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 
@@ -33,6 +36,12 @@ RUN chmod +x /usr/local/bin/setup-repos.sh
 
 # Create startup script
 RUN echo '#!/bin/sh' > /start.sh && \
+    echo 'echo "Configuring SSH for password auth..."' >> /start.sh && \
+    echo 'sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/" /etc/ssh/sshd_config' >> /start.sh && \
+    echo 'sed -i "s/#PasswordAuthentication.*/PasswordAuthentication yes/" /etc/ssh/sshd_config' >> /start.sh && \
+    echo 'sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" /etc/ssh/sshd_config' >> /start.sh && \
+    echo 'echo "PermitRootLogin yes" >> /etc/ssh/sshd_config' >> /start.sh && \
+    echo 'echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config' >> /start.sh && \
     echo 'echo "Running repository setup..."' >> /start.sh && \
     echo '/usr/local/bin/setup-repos.sh' >> /start.sh && \
     echo 'echo "Starting SSH daemon..."' >> /start.sh && \

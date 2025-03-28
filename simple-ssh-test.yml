@@ -1,0 +1,16 @@
+version: "3"
+services:
+  ssh-test:
+    image: alpine:latest
+    ports:
+      - "2323:22"
+    command: >
+      sh -c '
+        apk add --update --no-cache openssh bash &&
+        mkdir -p /var/run/sshd &&
+        ssh-keygen -A &&
+        echo "root:password" | chpasswd &&
+        echo "PermitRootLogin yes" >> /etc/ssh/sshd_config &&
+        echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config &&
+        /usr/sbin/sshd -D -e
+      '

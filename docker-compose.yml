@@ -12,6 +12,7 @@ services:
       - ssh_config:/root/.ssh
     environment:
       - NODE_ENV=production
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     healthcheck:
       test: ["CMD", "pgrep", "sshd"]
       interval: 30s
@@ -66,6 +67,7 @@ services:
     environment:
       - PROSODY_ADMIN_JID=admin@localhost
       - PROSODY_ADMIN_PASSWORD=admin123
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
     restart: unless-stopped
 
   monitor:

@@ -1,0 +1,15 @@
+version: "3"
+services:
+  ssh-server:
+    environment:
+      - ENABLE_SSH_PASSWORD=true
+    command: >
+      sh -c '
+        echo "Configuring SSH server..."
+        echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+        echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
+        echo "Running repository setup..."
+        /usr/local/bin/setup-repos.sh
+        echo "Starting SSH daemon..."
+        /usr/sbin/sshd -D -e
+      '
