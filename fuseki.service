@@ -1,0 +1,16 @@
+[Unit]
+Description=Apache Jena Fuseki Docker Container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=simple
+WorkingDirectory=/home/danny/hyperdata/tbox
+ExecStartPre=/usr/bin/docker compose build fuseki
+ExecStart=/usr/bin/docker compose up fuseki
+ExecStop=/usr/bin/docker compose stop fuseki
+Restart=always
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

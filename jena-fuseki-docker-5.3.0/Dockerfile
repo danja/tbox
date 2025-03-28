@@ -81,6 +81,10 @@ ARG JAVA_MINIMAL
 ARG FUSEKI_DIR
 ARG FUSEKI_JAR
 
+# Install procps to fix TDB concurrent usage issues
+# The ps command from procps is needed by Jena for TDB locking mechanism
+RUN apk add --no-cache procps wget
+
 COPY --from=base /opt/java-minimal /opt/java-minimal
 COPY --from=base /fuseki /fuseki
 
