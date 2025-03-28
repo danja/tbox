@@ -1,0 +1,225 @@
+TDB concurrent usage error #34
+Closed
+Closed
+TDB concurrent usage error
+#34
+@jtrugman
+Description
+jtrugman
+opened on Mar 11, 2020
+Hi,
+
+I ran into a weird error while running stain/jena-fuseki using Docker Compose. Whenever I run:
+
+version: '3'
+services:
+  fuseki:
+    image: stain/jena-fuseki:latest
+    environment:
+      - ADMIN_PASSWORD=enter1234
+    ports:
+      - "5050:3030" 
+It works the first time, when stain/jena-fuseki cannot be found locally and has to be fetched from the internet. However, when I run it again after stopping the container/killing the docker process I get an error like this:
+
+Server     ERROR Exception in initialization: Process ID 7 can't open database at location /fuseki/system/ because it is already locked by the process with PID 8. TDB databases do not permit concurrent usage across JVMs so in order to prevent possible data corruption you cannot open this location from the JVM that does not own the lock for the dataset
+fuseki_1  | [2020-03-11 16:44:57] WebAppContext WARN  Failed startup of context o.e.j.w.WebAppContext@1a28aef1{Apache Jena Fuseki Server,/,file:///jena-fuseki/webapp/,UNAVAILABLE}
+fuseki_1  | org.apache.jena.tdb.TDBException: Process ID 7 can't open database at location /fuseki/system/ because it is already locked by the process with PID 8. TDB databases do not permit concurrent usage across JVMs so in order to prevent possible data corruption you cannot open this location from the JVM that does not own the lock for the dataset
+This is making me think that some processes are not cleaning up fully when they are stopped or something similar to that. Especially since when I remove all of the containers (docker rm container_id) and remove the docker image (docker rmi stain/jena-fuseki) and rerun it, it works.
+
+More than happy to help debug the issue too! Just let me know.
+
+Cheers,
+Justin
+
+Activity
+infinite-dao
+infinite-dao commented on Mar 12, 2020
+infinite-dao
+on Mar 12, 2020 · edited by infinite-dao
+I have a similar problem I did:
+
+create a data container for permanent data, I named it fuseki-data
+create a container fuseki-app, stop it
+do a loading of data with a named container fuseki-loadsh-use-fuseki-data into a brand new dataset
+stop the loading container after successful load
+restart container fuseki-app
+then it fails as docker logs fuseki-app shows (see below in bash # commends)
+Here the commands I executed:
+
+docker run --detach --name fuseki-data --volume /fuseki busybox # data container
+
+docker run --detach --name fuseki-app -p 3030:3030 \
+  -e ADMIN_PASSWORD=pw123 \
+  --volumes-from fuseki-data stain/jena-fuseki
+docker logs fuseki-app
+# OK
+docker stop fuseki-app
+docker ps --all
+# CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                                PORTS               NAMES
+# 6f6af0faad44        stain/jena-fuseki   "/docker-entrypoint.…"   About a minute ago   Exited (137) Less than a second ago                       fuseki-app
+# 6591645f4ee6        busybox             "sh"                     About a minute ago   Exited (0) About a minute ago                             fuseki-data
+# try to load into a brand new cetaf-test20200312-1205
+docker run  --name fuseki-loadsh-use-fuseki-data \
+  --volumes-from fuseki-data \
+  --volume /home/aplank/sandbox/staging:/staging \
+  stain/jena-fuseki \
+  ./load.sh cetaf-test20200312-1205 Thread-2_herbarium.bgbm.org.rdf
+# OK
+docker ps --all
+# CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS                       PORTS               NAMES
+# 65bd64c29a01        stain/jena-fuseki   "/docker-entrypoint.…"   About a minute ago   Up About a minute            3030/tcp            fuseki-loadsh-use-fuseki-data
+# 6f6af0faad44        stain/jena-fuseki   "/docker-entrypoint.…"   4 minutes ago        Exited (137) 3 minutes ago                       fuseki-app
+# 6591645f4ee6        busybox             "sh"                     4 minutes ago        Exited (0) 4 minutes ago                         fuseki-data
+docker stop fuseki-loadsh-use-fuseki-data
+docker ps --all
+# CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                        PORTS               NAMES
+# 65bd64c29a01        stain/jena-fuseki   "/docker-entrypoint.…"   3 minutes ago       Exited (137) 22 seconds ago                       fuseki-loadsh-use-fuseki-data
+# 6f6af0faad44        stain/jena-fuseki   "/docker-entrypoint.…"   6 minutes ago       Exited (137) 4 minutes ago                        fuseki-app
+# 6591645f4ee6        busybox             "sh"                     6 minutes ago       Exited (0) 6 minutes ago                          fuseki-data
+docker start fuseki-app
+docker logs fuseki-app
+# TDB        WARN  Your platform does not support checking process liveness so TDB disk locations cannot be reliably locked to prevent possible corruption due to unsafe multi-JVM usage
+# java.io.IOException: Cannot run program "ps": error=2, No such file or directory
+# [2020-03-12 11:09:54] Server     ERROR Exception in initialization: caught: Process ID 8 can’t open database at location /fuseki/databases/cetaf-test20200312/ because it is already locked by the process with PID 9. TDB databases do not permit concurrent usage across JVMs so in order to prevent possible data corruption you cannot open this location from the JVM that does not own the lock for the dataset
+# [2020-03-12 11:09:54] WebAppContext WARN  Failed startup of context o.e.j.w.WebAppContext@859ea42{Apache Jena Fuseki Server,/,file:///jena-fuseki/webapp/,UNAVAILABLE}
+# org.apache.jena.assembler.exceptions.AssemblerException: caught: Process ID 8 can’t open database at location /fuseki/databases/cetaf-test20200312/ because it is already locked by the process with PID 9. TDB databases do not permit concurrent usage across JVMs so in order to prevent possible data corruption you cannot open this location from the JVM that does not own the lock for the dataset
+# [2020-03-12 11:09:54] Server     INFO  Started 2020/03/12 11:09:54 UTC on port 3030
+… and the server is broken.
+
+I guess the ps utility should be included into the Dockerfile to minimise Java errors java.io.IOException: Cannot run program "ps": error=2, No such file or directory it seems located in the procps package or so.
+
+Update: later, when I was starting my named containers fuseki-app and fuseki-loadsh-use-fuseki-data I installed at first in those containers procps. I guess in my case it is related, because in ProcessUtils.java it uses this ps command, so better have it available in the container too. This time I got no errors after stopping fuseki-loadsh-use-fuseki-data and restarting fuseki-app. The step of install in the container was:
+
+docker exec -it fuseki-app bash # run in the container named “fuseki-app”
+root@7fc3133f5863:/jena-fuseki#
+  apt-get update;
+  apt-get install -y --no-install-recommends procps
+  exit
+docker start fuseki-app
+# proceed with normal usage
+dpnevmatikos
+mentioned this on Apr 3, 2020
+issue when using a volume for data #35
+sroze
+mentioned this on Oct 25, 2020
+add procps package to install ps #40
+rachelheaven
+mentioned this on Jan 19, 2021
+Docker build for the API, and documentation BritishGeologicalSurvey/stratigraph#33
+srosset81
+added a commit that references this issue on Jan 28, 2021
+Add missing package to solve potentials bugs stain/jena-docker#34 (co…
+
+5c1b369
+tonicebrian
+tonicebrian commented on Feb 1, 2021
+tonicebrian
+on Feb 1, 2021
+Collaborator
+Same problem here, after a docker restart fuseki the lock is preventing fuseki from start. Any ideas about how to solve that?
+
+stain
+closed this as completedin f5fa18don Feb 11, 2021
+daxid
+daxid commented on May 4, 2021
+daxid
+on May 4, 2021
+The bug is still there on the latest Docker Hub image...
+
+AnaKostovska
+AnaKostovska commented on May 5, 2021
+AnaKostovska
+on May 5, 2021
+I have the same problem. Could you tell me how you solved the issue?
+
+daxid
+daxid commented on May 5, 2021
+daxid
+on May 5, 2021
+@AnaKostovska
+
+You can try to build your docker image frome the Dockerfile in this repo (I didn't try). It seems that this bus has been fixed here in Master but that it also made the automatic build of Docker Hub image fail.
+
+You could also try a different image from Docker Hub. I'm running since yesterday with the following docker-compose.yml :
+
+version: '2'
+services:
+    fuseki:
+        hostname: fuseki
+        image: zacanbot/fuseki
+        environment:
+            JVM_ARGS: -Xmx4g
+        volumes:
+            - /home/daxid/DEV/fuseki/data:/data/fuseki
+        ports:
+            - "127.0.0.1:3030:3030"```
+leroykim
+leroykim commented on May 24, 2021
+leroykim
+on May 24, 2021
+So, I followed @infinite-dao and it worked.
+
+Here's what I did:
+
+docker run --name fuseki-data -v /fuseki busybox
+docker run -d --name fuseki -p 3030:3030 --volumes-from fuseki-data stain/jena-fuseki
+NO DATA UPLOADING BEFORE RUNNING COMMANDS BELOW
+Run the commands:
+docker exec -it fuseki bash
+
+root@7fc3133f5863:/jena-fuseki# apt-get update
+root@7fc3133f5863:/jena-fuseki# apt-get install -y procps
+root@7fc3133f5863:/jena-fuseki# exit
+Run docker restart fuseki to see if it throws errors.
+Upload data (I uploaded the pizza ontology)
+Run docker restart fuseki again to see if it throws errors.
+Here's the result I got - no errors:
+
+[2021-05-24 08:59:28] Server INFO Apache Jena Fuseki 3.14.0
+[2021-05-24 08:59:28] Config INFO FUSEKI_HOME=/jena-fuseki
+[2021-05-24 08:59:28] Config INFO FUSEKI_BASE=/fuseki
+[2021-05-24 08:59:28] Config INFO Shiro file: file:///fuseki/shiro.ini
+[2021-05-24 08:59:28] Config INFO Configuration file: /fuseki/config.ttl
+[2021-05-24 08:59:29] Config INFO Load configuration: file:///fuseki/configuration/pizza.ttl
+[2021-05-24 08:59:29] Config INFO Register: /pizza
+[2021-05-24 08:59:29] Server INFO Started 2021/05/24 08:59:29 UTC on port 3030
+plasticfist
+mentioned this on Oct 29, 2021
+java.io.IOException: Cannot run program "ps": error=2, No such file or directory #59
+SimonBin
+SimonBin commented on May 17, 2022
+SimonBin
+on May 17, 2022
+for anyone else running into this, we had some success by using docker run --init to enable the tini init system
+
+milkbread
+milkbread commented on Sep 29, 2022
+milkbread
+on Sep 29, 2022
+So, I followed @infinite-dao and it worked.
+
+Here's what I did:
+
+docker run --name fuseki-data -v /fuseki busybox
+docker run -d --name fuseki -p 3030:3030 --volumes-from fuseki-data stain/jena-fuseki
+NO DATA UPLOADING BEFORE RUNNING COMMANDS BELOW
+Run the commands:
+docker exec -it fuseki bash
+
+root@7fc3133f5863:/jena-fuseki# apt-get update
+root@7fc3133f5863:/jena-fuseki# apt-get install -y procps
+root@7fc3133f5863:/jena-fuseki# exit
+Run docker restart fuseki to see if it throws errors.
+Upload data (I uploaded the pizza ontology)
+Run docker restart fuseki again to see if it throws errors.
+Here's the result I got - no errors:
+
+[2021-05-24 08:59:28] Server INFO Apache Jena Fuseki 3.14.0
+[2021-05-24 08:59:28] Config INFO FUSEKI_HOME=/jena-fuseki
+[2021-05-24 08:59:28] Config INFO FUSEKI_BASE=/fuseki
+[2021-05-24 08:59:28] Config INFO Shiro file: file:///fuseki/shiro.ini
+[2021-05-24 08:59:28] Config INFO Configuration file: /fuseki/config.ttl
+[2021-05-24 08:59:29] Config INFO Load configuration: file:///fuseki/configuration/pizza.ttl
+[2021-05-24 08:59:29] Config INFO Register: /pizza
+[2021-05-24 08:59:29] Server INFO Started 2021/05/24 08:59:29 UTC on port 3030
+This workaround worked for me even after a rebuild!
