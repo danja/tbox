@@ -1,6 +1,6 @@
 # tbox
 
-A Docker container for **hyperdata.it** projects.
+A Docker container for **hyperdata.it** projects. This is very experimental.
 
 ## Exposed Facilities
 
