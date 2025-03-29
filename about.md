@@ -18,6 +18,8 @@ docker-compose up -d
 
 ---
 
+cd ~/hyperdata/tbox
+
 http://localhost:4040/ - status monitor
 
 sudo systemctl stop fuseki
