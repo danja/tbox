@@ -42,7 +42,7 @@
         f:name              "update"
     ] ;
     f:endpoint [
-        f:operation f:gsp_rw ;
+        f:operation f:gsp-rw ;
         f:name "data"
     ] ;
     f:dataset [
@@ -61,7 +61,7 @@
         f:name              "update"
     ] ;
        f:endpoint [
-        f:operation f:gsp_rw ;
+        f:operation f:gsp-rw ;
         f:name "data"
     ] ;
     f:dataset [
@@ -80,7 +80,7 @@
         f:name              "update"
     ] ;
        f:endpoint [
-        f:operation f:gsp_rw ;
+        f:operation f:gsp-rw ;
         f:name "data"
     ] ;
     f:dataset [
@@ -99,7 +99,7 @@
         f:name              "update"
     ] ;
     f:endpoint [
-        f:operation f:gsp_rw ;
+        f:operation f:gsp-rw ;
         f:name "data"
     ] ;
     f:dataset [
