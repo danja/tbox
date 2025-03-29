@@ -2,7 +2,7 @@
 
 A Docker container for **hyperdata.it** projects. This is very experimental.
 
-## Exposed Facilities
+## Exposed Services
 
 ## HTTP
 * http://localhost:4000/ - echo request header
@@ -22,3 +22,25 @@ A Docker container for **hyperdata.it** projects. This is very experimental.
 *
 
 ## Install
+
+First time, run
+```
+cd ~/hyperdata/tbox # my local dir
+./rebuild-start.sh
+```
+
+```sh
+sudo systemctl stop tbox
+cd ~/hyperdata/tbox # my local dir
+docker-compose down
+docker-compose up -d
+```
+Wait a bit...
+```sh
+ssh root@localhost -p 2222
+```
+It may grumble about certs. Do the keygen command it suggests and login again.
+
+Then password is `semem`
+
+## Troubleshooting
