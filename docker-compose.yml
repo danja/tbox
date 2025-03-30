@@ -42,7 +42,7 @@ services:
       - FUSEKI_CONFIG_FILE=/fuseki/configuration/config.ttl
       - FUSEKI_BASE=/fuseki
       - SHIRO_INI=/fuseki/configuration/shiro.ini
-      - JVM_ARGS=-Xmx2g
+      - JVM_ARGS=-Xmx1g
     # Add init system to properly handle process termination
     init: true
     # This will ensure the container restarts if there are issues
