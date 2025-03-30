@@ -43,6 +43,16 @@ services:
       - FUSEKI_BASE=/fuseki
       - SHIRO_INI=/fuseki/configuration/shiro.ini
       - JVM_ARGS=-Xmx2g
+    # Add init system to properly handle process termination
+    init: true
+    # This will ensure the container restarts if there are issues
+    restart: unless-stopped
+    # Healthcheck to verify Fuseki is running properly
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3030/"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
 
   nginx:
     image: nginx:alpine
