@@ -32,7 +32,7 @@ services:
 
 fuseki:
   build: ./jena-fuseki-docker-5.3.0  # Path relative to tbox directory
-  image: tbox_fuseki:5.3.0  # Custom image name
+  image: fuseki_tbox:5.3.0  # Custom image name
   ports:
     - "4030:3030"
   volumes:
