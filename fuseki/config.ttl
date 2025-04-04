@@ -34,6 +34,16 @@
         tdb2:location "/fuseki/databases/semem" ;
     ] .
 
+
+:trellis rdf:type f:Service ;
+    f:name                     "trellis" ;
+    f:endpoint [ f:operation f:query ; ] ;
+    f:endpoint [ f:operation f:update ; ] ;
+    f:dataset [
+        rdf:type tdb2:DatasetTDB2 ;
+        tdb2:location "/fuseki/databases/trellis"
+    ] .
+
 :test-db rdf:type f:Service ;
     f:name "test-db" ;
     f:endpoint [ f:operation f:query ; ] ;
