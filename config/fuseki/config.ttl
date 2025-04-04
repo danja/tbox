@@ -69,6 +69,37 @@
         tdb2:location "/fuseki/databases/semem"
     ] .
 
+:trellis rdf:type f:Service ;
+    f:name                     "trellis" ;
+    f:endpoint [
+        f:operation          f:query ;
+        f:operation          f:update ;
+        f:name              "sparql"
+    ] ;
+    f:dataset [
+        rdf:type tdb2:DatasetTDB2 ;
+        tdb2:location "/fuseki/databases/trellis"
+    ] .
+
+:test-db rdf:type f:Service ;
+    f:name                     "test-db" ;
+    f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
+    ] ;
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
+    ] ;
+       f:endpoint [
+        f:operation f:gsp-rw ;
+        f:name "data"
+    ] ;
+
+    f:dataset [
+        rdf:type tdb2:DatasetTDB2 ;
+        tdb2:location "/fuseki/databases/test-db"
+    ] .
 :test-db rdf:type f:Service ;
     f:name                     "test-db" ;
     f:endpoint [
