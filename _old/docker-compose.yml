@@ -31,7 +31,7 @@ services:
       - FUSEKI_DATASET=semem
 
 fuseki:
-  image: tbox_fuseki:5.3.0
+  image: apache/jena-fuseki:5.3.0
   ports:
     - "4030:3030"
   volumes:
