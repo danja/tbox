@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: fuseki
+    image: fuseki_tbox:5.3.0 
     ports:
       - "3030:3030"
     volumes:
