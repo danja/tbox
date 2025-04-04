@@ -145,7 +145,7 @@ These commands are actually stored in restart.sh in your project.
 The monitor dashboard will be available at http://localhost:4040 once everything is up.
 
 Restart:
-http://localhost:4000/
+http://localhost:4010/ - app = echo
 http://localhost:4030/ - Fuseki
 http://localhost:4080/
 

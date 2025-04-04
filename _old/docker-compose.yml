@@ -23,7 +23,7 @@ services:
     build:
       context: ./services/app
     ports:
-      - "4000:8311"
+      - "4010:8311"
     depends_on:
       - fuseki
     environment:

@@ -5,7 +5,7 @@ A Docker container for **hyperdata.it** projects. This is very experimental.
 ## Exposed Services
 
 ## HTTP
-* http://localhost:4000/ - echo request header
+* http://localhost:4010/ - echo request header
 * http://localhost:4030/ - Fuseki admin
 * http://localhost:4040/ - health check
 
