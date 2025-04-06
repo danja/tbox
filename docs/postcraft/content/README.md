@@ -51,3 +51,7 @@ It may grumble about certs. Do the keygen command it suggests and login again.
 Then password is `semem`
 
 ## Troubleshooting
+
+* [Docker Cheatsheet](https://docs.docker.com/get-started/docker_cheatsheet.pdf)
+* [Docker Compose Cheatsheet](https://devopscycle.com/pdfs/the-ultimate-docker-compose-cheat-sheet.pdf)
+* [nginx Cheatsheet](https://www.docdroid.net/ooD0qnV/nginx-cheat-sheet-pdf)
