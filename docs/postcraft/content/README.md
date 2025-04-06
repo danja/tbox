@@ -6,6 +6,7 @@ A Docker container for **hyperdata.it** projects. This is very experimental.
 
 ## HTTP
 
+- http://localhost:4000/ - nginx
 - http://localhost:4010/ - echo request header
 - http://localhost:4030/ - Fuseki admin
 - http://localhost:4040/ - health check
@@ -15,6 +16,7 @@ A Docker container for **hyperdata.it** projects. This is very experimental.
 **3rd party**
 
 - Alpine Linux
+- nginx HTTP server
 - Fuseki SPARQL server
 - Prosody XMPP
 - node
