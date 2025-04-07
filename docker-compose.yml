@@ -42,7 +42,7 @@ services:
       - ./data/fuseki:/fuseki/databases
       - ./config/fuseki:/fuseki/configuration:rw
       - ./config/fuseki:/fuseki/config-source:ro  # Source configs as read-only
-      - ./init-fuseki.sh:/init-fuseki.sh:ro
+      - ./fuseki-entrypoint.sh:/fuseki-entrypoint.sh:ro
     environment:
       - ADMIN_PASSWORD=admin123
       - FUSEKI_CONFIG_FILE=/fuseki/configuration/config.ttl
@@ -55,7 +55,15 @@ services:
     restart: unless-stopped
 
 # to sort permissions
-    entrypoint: ["/bin/sh", "-c", "chmod +x /init-fuseki.sh && /init-fuseki.sh /fuseki/entrypoint.sh"]
+ #   entrypoint: ["/bin/sh", "-c", "chmod +x /init-fuseki.sh && /init-fuseki.sh /fuseki/entrypoint.sh"]
+ #   entrypoint: ["/bin/sh", "-c", "/fuseki-entrypoint.sh"]
+    command: >
+     /bin/sh -c "
+        mkdir -p /fuseki/configuration /fuseki/databases &&
+        find /fuseki/databases -name '*.lock' -type f -delete 2>/dev/null || true &&
+        chmod -R 777 /fuseki/configuration /fuseki/databases &&
+        /fuseki/entrypoint.sh  --config=/fuseki/configuration/config.ttl
+      "
     # Healthcheck to verify Fuseki is running properly
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3030/"]
