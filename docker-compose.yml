@@ -32,16 +32,13 @@ services:
 
   fuseki:
     image: tbox_fuseki:5.3.0
-    user:
-      "0:0" # root
+    user: "0:0"  # Temporarily use root user for debugging
     ports:
       - "4030:3030"
     volumes:
- #     - ./data/fuseki:/fuseki/databases
-  #    - ./config/fuseki:/fuseki/configuration:rw
-      - ./data/fuseki:/fuseki/databases
-      - ./config/fuseki:/fuseki/configuration:rw
-      - ./config/fuseki:/fuseki/config-source:ro  # Source configs as read-only
+      - fuseki_data:/fuseki/databases
+      - ./config/fuseki:/fuseki/configuration:ro
+      - ./config/fuseki:/fuseki/config-source:ro
       - ./fuseki-entrypoint.sh:/fuseki-entrypoint.sh:ro
     environment:
       - ADMIN_PASSWORD=admin123
@@ -49,27 +46,22 @@ services:
       - FUSEKI_BASE=/fuseki
       - SHIRO_INI=/fuseki/configuration/shiro.ini
       - JVM_ARGS=-Xmx1g
-    # Add init system to properly handle process termination
     init: true
-    # This will ensure the container restarts if there are issues
     restart: unless-stopped
-
-# to sort permissions
- #   entrypoint: ["/bin/sh", "-c", "chmod +x /init-fuseki.sh && /init-fuseki.sh /fuseki/entrypoint.sh"]
- #   entrypoint: ["/bin/sh", "-c", "/fuseki-entrypoint.sh"]
-    command: >
-     /bin/sh -c "
-        mkdir -p /fuseki/configuration /fuseki/databases &&
-        find /fuseki/databases -name '*.lock' -type f -delete 2>/dev/null || true &&
-        chmod -R 777 /fuseki/configuration /fuseki/databases &&
-        /fuseki/entrypoint.sh  --config=/fuseki/configuration/config.ttl
-      "
-    # Healthcheck to verify Fuseki is running properly
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3030/"]
-      interval: 1m
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", http://localhost:3030/$/ping]
+    #   test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3030/"]
+      interval: 30s
       timeout: 10s
       retries: 3
+      start_period: 30s
+    # Use a direct command to debug entrypoint issues
+    command: >
+      /bin/sh -c "
+         chmod +x /fuseki-entrypoint.sh &&
+         echo 'Running entrypoint script...' &&
+         /fuseki-entrypoint.sh --config=/fuseki/configuration/config.ttl
+      "
 
   nginx:
     image: nginx:alpine
@@ -114,4 +106,6 @@ volumes:
   npm_cache:
   ssh_config:
   data:
+    driver: local
+  fuseki_data:
     driver: local

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 # Function to clean up lock files safely
@@ -26,8 +26,9 @@ trap graceful_shutdown SIGTERM SIGINT
 cleanup_locks
 
 # Ensure proper permissions on directories
+echo "Setting up directories..."
 mkdir -p /fuseki/configuration /fuseki/databases
-chown -R fuseki:fuseki /fuseki/databases /fuseki/configuration 2>/dev/null || true
+chmod -R 777 /fuseki/databases /fuseki/configuration 2>/dev/null || true
 
 # Copy configuration if needed
 if [ -d "/fuseki/config-source" ] && [ ! -f "/fuseki/configuration/config.ttl" ]; then
@@ -36,13 +37,13 @@ if [ -d "/fuseki/config-source" ] && [ ! -f "/fuseki/configuration/config.ttl" ]
 fi
 
 echo "Starting Fuseki with arguments: $@"
-if [ "$(id -u)" = "0" ]; then
-    # If running as root, switch to fuseki user
-    echo "Running as fuseki user..."
-    exec su-exec fuseki:fuseki /fuseki/entrypoint.sh "$@" &
+# Run the original Fuseki entrypoint script
+if [ -f "/fuseki/entrypoint.sh" ]; then
+    echo "Using Fuseki's entrypoint script..."
+    /fuseki/entrypoint.sh "$@" &
 else
-    # Otherwise run directly
-    exec /fuseki/entrypoint.sh "$@" &
+    echo "Fuseki entrypoint script not found, using java directly..."
+    java $JVM_ARGS -jar /fuseki/fuseki-server.jar "$@" &
 fi
 
 PID=$!
