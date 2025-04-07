@@ -1,6 +1,4 @@
 FROM alpine:latest
-COPY config/scripts/setup-repos.sh /tmp/
-CMD ["cat", "/tmp/setup-repos.sh"]
 
 RUN apk add --update --no-cache \
     nodejs \
@@ -32,8 +30,8 @@ RUN mkdir -p /home/projects && \
     chown -R semem:semem /home/projects && \
     chmod 755 /home/projects
 
-# Fix path to reference the correct location (with underscore)
 COPY config/scripts/setup-repos.sh /usr/local/bin/
+# COPY projects/setup-repos.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup-repos.sh
 
 # Create startup script

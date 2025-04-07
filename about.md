@@ -1,6 +1,16 @@
-Run ./tbox-manage.sh clean to completely rebuild the environment
-Monitor the logs with ./tbox-manage.sh logs fuseki
-Check the status with ./tbox-manage.sh status
+cd jena-fuseki-docker-5.3.0/
+root@hyperdata:/home/github/tbox/jena-fuseki-docker-5.3.0# docker-compose build --build-arg JENA_VERSION=5.3.0
+
+Issue with the Fuseki image
+
+https://github.com/stain/jena-docker/issues/34
+/etc/systemd/system/tbox.service
+
+need to integrate :
+https://jena.apache.org/documentation/fuseki2/fuseki-docker.html
+see `jena-fuseki-docker-5.3.0`
+
+workaround for now:
 
 ```sh
 sudo systemctl stop tbox
