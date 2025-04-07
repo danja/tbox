@@ -32,7 +32,7 @@ services:
 
   fuseki:
     image: tbox_fuseki:5.3.0
-    user: "0:0"  # Temporarily use root user for debugging
+    user: "0:0" # Temporarily use root user for debugging
     ports:
       - "4030:3030"
     volumes:
@@ -49,8 +49,16 @@ services:
     init: true
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", http://localhost:3030/$/ping]
-    #   test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3030/"]
+      #  test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", http://localhost:3030/$/ping]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3030/",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
