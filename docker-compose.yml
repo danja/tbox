@@ -46,6 +46,7 @@ services:
       - FUSEKI_BASE=/fuseki
       - SHIRO_INI=/fuseki/configuration/shiro.ini
       - JVM_ARGS=-Xmx1g
+      - FUSEKI_DATASET_1=semem
     init: true
     restart: unless-stopped
     healthcheck:
@@ -74,7 +75,7 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "4000:4000"
+      - "4000:4000" # will be admin
     volumes:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./services/web/public:/usr/share/nginx/html:ro
