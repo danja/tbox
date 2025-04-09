@@ -7,6 +7,12 @@ sudo systemctl stop tbox
 cd ~/hyperdata/tbox # my local dir
 docker-compose down
 docker-compose up -d
+
+sudo systemctl stop tbox
+cd ~/hyperdata/tbox # my local dir
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
 ```
 
 ---
