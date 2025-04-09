@@ -32,13 +32,13 @@ services:
 
   fuseki:
     image: tbox_fuseki:5.3.0
-    user: "0:0" # Temporarily use root user for debugging
+    user: "0:0" # root
     ports:
       - "4030:3030"
     volumes:
-      - fuseki_data:/fuseki/databases
-      - ./config/fuseki:/fuseki/configuration:ro
-      - ./config/fuseki:/fuseki/config-source:ro
+      - ./data/fuseki:/fuseki/databases
+      - ./config/fuseki:/fuseki/configuration:rw
+      - ./config/fuseki:/fuseki/config-source:ro # Source configs as read-only
       - ./fuseki-entrypoint.sh:/fuseki-entrypoint.sh:ro
     environment:
       - ADMIN_PASSWORD=admin123
@@ -48,8 +48,14 @@ services:
       - JVM_ARGS=-Xmx1g
     init: true
     restart: unless-stopped
+    command: >
+      /bin/sh -c "
+         mkdir -p /fuseki/configuration /fuseki/databases &&
+         find /fuseki/databases -name '*.lock' -type f -delete 2>/dev/null || true &&
+         chmod -R 777 /fuseki/configuration /fuseki/databases &&
+         /fuseki/entrypoint.sh  --config=/fuseki/configuration/config.ttl
+       "
     healthcheck:
-      #  test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", http://localhost:3030/$/ping]
       test:
         [
           "CMD",
@@ -59,17 +65,9 @@ services:
           "--spider",
           "http://localhost:3030/",
         ]
-      interval: 30s
+      interval: 1m
       timeout: 10s
       retries: 3
-      start_period: 30s
-    # Use a direct command to debug entrypoint issues
-    command: >
-      /bin/sh -c "
-         chmod +x /fuseki-entrypoint.sh &&
-         echo 'Running entrypoint script...' &&
-         /fuseki-entrypoint.sh --config=/fuseki/configuration/config.ttl
-      "
 
   nginx:
     image: nginx:alpine
@@ -78,9 +76,11 @@ services:
     volumes:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./services/web/public:/usr/share/nginx/html:ro
+      - ./projects:/home/projects:ro
     depends_on:
       - app
       - fuseki
+      - ssh-server
 
   xmpp:
     image: prosody/prosody
@@ -114,6 +114,4 @@ volumes:
   npm_cache:
   ssh_config:
   data:
-    driver: local
-  fuseki_data:
     driver: local
