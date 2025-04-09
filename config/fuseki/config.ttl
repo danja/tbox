@@ -10,26 +10,13 @@
      :test-mem
      :test-db
      :semem
+     :squirt
+     :tia
+     :claudiob
+     :danja
+     :danbri
      :hyperdata
    ) .
-
-:test-mem rdf:type f:Service ;
-    f:name                     "test-mem" ;
-    f:endpoint [
-        f:operation          f:query ;
-        f:name              "query"
-    ] ;
-    f:endpoint [
-        f:operation          f:update ;
-        f:name              "update"
-    ] ;
-    f:endpoint [
-        f:operation          f:gsp-rw ;
-        f:name              "data"
-    ] ;
-    f:dataset [
-        rdf:type ja:MemoryDataset
-    ] .
 
 :ds rdf:type f:Service ;
     f:name                     "ds" ;
@@ -50,11 +37,49 @@
         tdb2:location "/fuseki/databases/ds"
     ] .
 
+:test-mem rdf:type f:Service ;
+    f:name                     "test-mem" ;
+    f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
+    ] ;
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
+    ] ;
+    f:endpoint [
+        f:operation          f:gsp-rw ;
+        f:name              "data"
+    ] ;
+    f:dataset [
+        rdf:type ja:MemoryDataset
+    ] .
+
+:test-db rdf:type f:Service ;
+    f:name                     "test-db" ;
+    f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
+    ] ;
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
+    ] ;
+       f:endpoint [
+        f:operation f:gsp-rw ;
+        f:name "data"
+    ] ;
+
+    f:dataset [
+        rdf:type tdb2:DatasetTDB2 ;
+        tdb2:location "/fuseki/databases/test-db"
+    ] .
+
 :semem rdf:type f:Service ;
     f:name                     "semem" ;
     f:endpoint [
         f:operation          f:query ;
-        f:name              "query"
+       f:name              "query"
     ] ;
     f:endpoint [
         f:operation          f:update ;
@@ -69,18 +94,28 @@
         tdb2:location "/fuseki/databases/semem"
     ] .
 
-:trellis rdf:type f:Service ;
-    f:name                     "trellis" ;
-    f:endpoint [ f:operation f:query ; ] ;
-    f:endpoint [ f:operation f:update ; ] ;
+:squirt rdf:type f:Service ;
+    f:name                     "squirt" ;
+    f:endpoint [
+         f:operation          f:query ;
+        f:name              "query"
+    ] ;
+    f:endpoint [ f:operation f:update ;
+       f:name              "update"
+       ] ;
+              f:endpoint [
+        f:operation f:gsp-rw ;
+        f:name "data"
+    ] ;
     f:dataset [
         rdf:type tdb2:DatasetTDB2 ;
-        tdb2:location "/fuseki/databases/trellis"
+        tdb2:location "/fuseki/databases/squirt"
     ] .
 
-:test-db rdf:type f:Service ;
-    f:name                     "test-db" ;
-    f:endpoint [
+
+:tia rdf:type f:Service ;
+    f:name "tia" ;
+   f:endpoint [
         f:operation          f:query ;
         f:name              "query"
     ] ;
@@ -88,18 +123,18 @@
         f:operation          f:update ;
         f:name              "update"
     ] ;
-       f:endpoint [
+    f:endpoint [
         f:operation f:gsp-rw ;
         f:name "data"
     ] ;
-
     f:dataset [
         rdf:type tdb2:DatasetTDB2 ;
-        tdb2:location "/fuseki/databases/test-db"
+        tdb2:location "/fuseki/databases/tia"
     ] .
-:test-db rdf:type f:Service ;
-    f:name                     "test-db" ;
-    f:endpoint [
+
+:claudiob rdf:type f:Service ;
+    f:name "claudiob" ;
+   f:endpoint [
         f:operation          f:query ;
         f:name              "query"
     ] ;
@@ -107,16 +142,54 @@
         f:operation          f:update ;
         f:name              "update"
     ] ;
-       f:endpoint [
+    f:endpoint [
         f:operation f:gsp-rw ;
         f:name "data"
     ] ;
     f:dataset [
         rdf:type tdb2:DatasetTDB2 ;
-        tdb2:location "/fuseki/databases/test-db"
+        tdb2:location "/fuseki/databases/claudiob"
     ] .
 
-:hyperdata rdf:type f:Service ;
+:danja rdf:type f:Service ;
+    f:name "danja" ;
+   f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
+    ] ;
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
+    ] ;
+    f:endpoint [
+        f:operation f:gsp-rw ;
+        f:name "data"
+    ] ;
+    f:dataset [
+        rdf:type tdb2:DatasetTDB2 ;
+        tdb2:location "/fuseki/databases/danja"
+    ] .
+
+:claudiob rdf:type f:Service ;
+    f:name "danbri" ;
+   f:endpoint [
+        f:operation          f:query ;
+        f:name              "query"
+    ] ;
+    f:endpoint [
+        f:operation          f:update ;
+        f:name              "update"
+    ] ;
+    f:endpoint [
+        f:operation f:gsp-rw ;
+        f:name "data"
+    ] ;
+    f:dataset [
+        rdf:type tdb2:DatasetTDB2 ;
+        tdb2:location "/fuseki/databases/danbri"
+    ] .
+
+:claudiob rdf:type f:Service ;
     f:name "hyperdata" ;
    f:endpoint [
         f:operation          f:query ;

@@ -5,50 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TBox Dashboard</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 2em;
-        }
-
-        .status-card {
-            border: 1px solid #ddd;
-            padding: 1em;
-            margin: 1em 0;
-        }
-
-        .healthy {
-            color: green;
-        }
-
-        .unhealthy {
-            color: red;
-        }
-    </style>
 </head>
 
 <body>
-    <h1>TBox System Status</h1>
-    <div class="status-card">
-        <h2>Service Health</h2>
-        <p>Monitor: <span id="monitor-status">Checking...</span></p>
-        <p>Fuseki: <span id="fuseki-status">Checking...</span></p>
-        <p>XMPP: <span id="xmpp-status">Checking...</span></p>
+    <h1>TBox Dashboard</h1>
+    <div>
+        <ul>
+            <li><a href="squirt">Squirt</a></li>
+            <li><a href="http://localhost:4010/">Echo Header</a></li>
+            <li><a href="http://localhost:4040/">Health Check</a></li>
+        </ul>
+        <em>http://localhost:4030/ - SPARQL server endpoints</em>
     </div>
-    <script>
-        async function updateStatus() {
-            try {
-                const response = await fetch('/health');
-                const data = await response.json();
-                document.getElementById('monitor-status').textContent = data.status;
-                document.getElementById('monitor-status').className = data.status;
-            } catch (error) {
-                console.error('Error fetching status:', error);
-            }
-        }
-        updateStatus();
-        setInterval(updateStatus, 30000);
-    </script>
 </body>
 
 </html>

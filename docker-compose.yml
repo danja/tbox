@@ -28,7 +28,16 @@ services:
       - fuseki
     environment:
       - FUSEKI_URL=http://fuseki:3030
-      - FUSEKI_DATASET=semem
+      - FUSEKI_DATASET_1=ds
+      - FUSEKI_DATASET_2=test-mem
+      - FUSEKI_DATASET_3=test-db
+      - FUSEKI_DATASET_4=semem
+      - FUSEKI_DATASET_5=squirt
+      - FUSEKI_DATASET_6=tia
+      - FUSEKI_DATASET_7=claudiob
+      - FUSEKI_DATASET_8=danja
+      - FUSEKI_DATASET_9=danbri
+      - FUSEKI_DATASET_10=hyperdata
 
   fuseki:
     image: tbox_fuseki:5.3.0

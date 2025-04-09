@@ -7,6 +7,7 @@ A Docker container for **hyperdata.it** projects. This is very experimental, not
 ## HTTP
 
 - http://localhost:4000/ - nginx
+  http://localhost:4000/squirt/
 - http://localhost:4010/ - echo request header
 - http://localhost:4030/ - SPARQL server endpoints
 - http://localhost:4040/ - health check
