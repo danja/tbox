@@ -32,6 +32,7 @@ A Docker container for **hyperdata.it** projects. This is very experimental, not
 Run ./tbox-manage.sh clean to completely rebuild the environment _danger_ wipes volumes
 
 ```sh
+cd ~/hyperdata/tbox # whatever your local dir
 ./tbox-manage.sh clean # _dangerOUS_
 ./tbox-manage.sh logs [service]
 ./tbox-manage.sh status
