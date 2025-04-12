@@ -149,6 +149,15 @@ case "$1" in
     *)
         echo "TBox Management Script"
         echo "Usage: $0 {start|stop|restart [service]|rebuild|clean|status|logs [service]|fix-fuseki}"
+        echo "\nOptions:"
+        echo "  start          Start all services"
+        echo "  stop           Stop all services"
+        echo "  restart        Restart all services or a specific service if provided"
+        echo "  rebuild        Rebuild all services without using cache"
+        echo "  clean          Clean the environment, including volumes, and restart services"
+        echo "  status         Show the current status of services and their health"
+        echo "  logs           Show logs for all services or a specific service if provided"
+        echo "  fix-fuseki     Fix Fuseki lock files and restart the Fuseki service"
         exit 1
 esac
 

@@ -72,8 +72,8 @@ exit
 ```
 
 ```sh
-cd ~/hyperdata/tbox # my local dir
-docker-compose down
+  cd ~/hyperdata/tbox # my local dir
+  docker-compose down
 docker-compose build --no-cache
 rm logs/startup.log
 docker-compose up -d

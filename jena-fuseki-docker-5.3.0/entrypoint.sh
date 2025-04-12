@@ -37,9 +37,9 @@ trap cleanup SIGINT SIGTERM
 cleanup_locks
 
 # Start Fuseki
-echo "Starting Fuseki with Java options: $JAVA_OPTIONS"
-"$JAVA_HOME/bin/java" $JAVA_OPTIONS -jar "${FUSEKI_DIR}/${FUSEKI_JAR}" "$@" &
-PID=$!
+#echo "Starting Fuseki with Java options: $JAVA_OPTIONS"
+#"$JAVA_HOME/bin/java" $JAVA_OPTIONS -jar "${FUSEKI_DIR}/${FUSEKI_JAR}" "$@" &
+#PID=$!
 
 # Wait for the Java process
-wait $PID
+#wait $PID
