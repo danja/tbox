@@ -4,7 +4,7 @@ modules_enabled = {
     "roster"; "saslauth"; "tls"; "dialback"; "disco";
     "posix"; "ping"; "register";
     "admin_adhoc"; "offline"; "c2s"; "s2s";
-    "muc"; "muc_mam"; "vcard";
+    "vcard";
 }
 
 -- Authentication settings
