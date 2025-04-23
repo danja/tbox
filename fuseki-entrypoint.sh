@@ -39,8 +39,8 @@ fi
 echo "Starting Fuseki with arguments: $@"
 # Run the original Fuseki entrypoint script
 if [ -f "/fuseki/entrypoint.sh" ]; then
-    echo "Using Fuseki's entrypoint script..."
-    /fuseki/entrypoint.sh "$@" &
+ #   echo "Using Fuseki's entrypoint script..."
+  #  /fuseki/entrypoint.sh "$@" &
 else
     echo "Fuseki entrypoint script not found, using java directly..."
     java $JVM_ARGS -jar /fuseki/fuseki-server.jar "$@" &
