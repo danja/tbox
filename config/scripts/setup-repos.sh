@@ -25,6 +25,7 @@ clone_repo "danja/transmissions"
 clone_repo "danja/tia"
 clone_repo "danja/farelo"
 clone_repo "danja/squirt"
+clone_repo "danja/wstore"
 
 # Install npm packages for subdirectories with package.json
 find_and_install_npm() {
