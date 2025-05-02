@@ -91,10 +91,12 @@ services:
     volumes:
       - ./config/prosody/prosody.cfg.lua:/etc/prosody/prosody.cfg.lua:ro
       - ./config/certs:/etc/prosody/certs:ro
+#      - ./config/prosody/prosody-init-users.sh:/prosody-init-users.sh:ro
     environment:
       - PROSODY_ADMIN_JID=admin@localhost
       - PROSODY_ADMIN_PASSWORD=admin123
       - NODE_TLS_REJECT_UNAUTHORIZED=0
+ #   entrypoint: ["/bin/bash", "-c", "/usr/bin/prosodyctl start & sleep 3; /prosody-init-users.sh; wait"]
     restart: unless-stopped
 
   monitor:

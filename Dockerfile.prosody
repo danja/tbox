@@ -5,4 +5,11 @@ RUN mkdir -p /var/lib/prosody/logs && \
     touch /var/lib/prosody/logs/prosody.log /var/lib/prosody/logs/error.log && \
     chown -R prosody:prosody /var/lib/prosody
 
+# Copy user creation script
+#COPY config/prosody/prosody-init-users.sh /usr/local/bin/prosody-init-users.sh
+#RUN chmod +x /usr/local/bin/prosody-init-users.sh
+
 USER prosody
+
+# Run user creation script at container start
+#ENTRYPOINT ["/bin/bash", "-c", "/usr/bin/prosodyctl start & sleep 3; /usr/local/bin/prosody-init-users.sh; wait"]
