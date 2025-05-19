@@ -10,6 +10,7 @@
     "start": "docker-compose up",
     "build": "docker-compose build",
     "test": "npm run test --workspaces",
+    "test:xmpp": "NODE_TLS_REJECT_UNAUTHORIZED=0 node tests/xmpp/test-xmpp-send-receive.js",
     "lint": "npm run lint --workspaces",
     "clean": "docker-compose down --volumes",
     "rp": "repomix -c repomix.config.json ."
@@ -21,5 +22,9 @@
     "nginx"
   ],
   "author": "Danny Ayers",
-  "license": "MIT"
+  "license": "ISC",
+  "dependencies": {
+    "@xmpp/client": "^0.13.4",
+    "@xmpp/debug": "^0.13.3"
+  }
 }

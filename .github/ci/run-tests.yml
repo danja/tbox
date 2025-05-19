@@ -84,7 +84,13 @@ run_e2e_tests() {
   echo "Running end-to-end tests..."
   
   # Test the complete flow from app to Fuseki and back
-  # Add your e2e test logic here
+  # Run XMPP send/receive test
+  if npm run test:xmpp; then
+    echo "XMPP test passed"
+  else
+    echo "XMPP test failed"
+    exit 1
+  fi
   
   echo "End-to-end tests completed"
 }
