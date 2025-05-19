@@ -1,0 +1,111 @@
+version: '3'
+
+services:
+  # Test service - runs test suite and exits
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    depends_on:
+      fuseki:
+        condition: service_healthy
+      app:
+        condition: service_healthy
+      xmpp:
+        condition: service_healthy
+    volumes:
+      - ./:/app
+      - test-results:/app/test-results
+    environment:
+      - NODE_ENV=test
+      - FUSEKI_URL=http://fuseki:3030
+      - APP_URL=http://app:8311
+      - XMPP_HOST=xmpp
+    command: npm test
+
+  # Regular services with test configurations
+  ssh-server:
+    build: .
+    ports:
+      - "2222:22"
+    volumes:
+      - ./projects:/home/projects
+      - ./config/scripts:/scripts:ro
+      - test-node_modules:/home/projects/node_modules
+    environment:
+      - NODE_ENV=test
+    healthcheck:
+      test: [ "CMD", "pgrep", "sshd" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  app:
+    build:
+      context: ./services/app
+    environment:
+      - NODE_ENV=test
+      - FUSEKI_URL=http://fuseki:3030
+      - FUSEKI_DATASET_1=test-mem
+    depends_on:
+      fuseki:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8311/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  fuseki:
+    image: stain/jena-fuseki:latest
+    user: "0:0" # root
+    volumes:
+      - ./config/fuseki:/fuseki/configuration:rw
+      - test-fuseki-data:/fuseki/databases
+    environment:
+      - ADMIN_PASSWORD=admin123
+      - FUSEKI_CONFIG_FILE=/fuseki/configuration/config.ttl
+      - JVM_ARGS=-Xmx512m -Xms256m
+      - JAVA_OPTIONS=-Xmx512m -Xms256m
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3030/$/ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  xmpp:
+    image: prosody/prosody
+    volumes:
+      - ./config/prosody/prosody.cfg.lua:/etc/prosody/prosody.cfg.lua:ro
+      - ./config/certs:/etc/prosody/certs:ro
+      - test-prosody-data:/var/lib/prosody
+    environment:
+      - PROSODY_ADMIN_JID=admin@localhost
+      - PROSODY_ADMIN_PASSWORD=admin123
+    healthcheck:
+      test: [ "CMD", "prosodyctl", "status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  monitor:
+    build:
+      context: ./services/monitor
+    depends_on:
+      - fuseki
+      - xmpp
+    environment:
+      - NODE_ENV=test
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+# Use test-specific volumes to avoid contaminating development/production data
+volumes:
+  test-node_modules:
+  test-fuseki-data:
+  test-prosody-data:
+  test-results:

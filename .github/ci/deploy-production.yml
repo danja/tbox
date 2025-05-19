@@ -1,0 +1,183 @@
+#!/bin/bash
+# deploy-production.sh - Deploy TBox to production environment
+
+set -e
+
+# Configuration 
+DEPLOY_HOST=${DEPLOY_HOST:-"production-server.example.com"}
+DEPLOY_USER=${DEPLOY_USER:-"deploy"}
+DEPLOY_DIR=${DEPLOY_DIR:-"/opt/tbox"}
+DOCKER_REGISTRY=${DOCKER_REGISTRY:-"ghcr.io"}
+DOCKER_REPO=${DOCKER_REPO:-"your-username/tbox"}
+# Use tag version for production, not dev version
+VERSION=${VERSION:-$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')}
+
+# Check required environment variables
+if [ -z "$DEPLOY_KEY" ]; then
+  echo "Error: DEPLOY_KEY environment variable not set" >&2
+  exit 1
+fi
+
+if [ -z "$VERSION" ]; then
+  echo "Error: Could not determine version" >&2
+  exit 1
+fi
+
+echo "Deploying version $VERSION to production environment..."
+
+# Create temporary SSH key file
+SSH_KEY_FILE=$(mktemp)
+echo "$DEPLOY_KEY" > $SSH_KEY_FILE
+chmod 600 $SSH_KEY_FILE
+
+# Backup function
+backup() {
+  echo "Creating backup before production deployment..."
+  
+  # Create backup of databases and configuration
+  ssh -i $SSH_KEY_FILE -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST << EOF
+    cd $DEPLOY_DIR
+    
+    # Create backup directory with timestamp
+    BACKUP_DIR="backups/\$(date +%Y%m%d_%H%M%S)"
+    mkdir -p \$BACKUP_DIR
+    
+    # Backup Fuseki databases
+    if [ -d "data/fuseki" ]; then
+      echo "Backing up Fuseki databases..."
+      tar -czf "\$BACKUP_DIR/fuseki_databases.tar.gz" data/fuseki
+    fi
+    
+    # Backup configuration files
+    echo "Backing up configuration files..."
+    cp docker-compose.yml "\$BACKUP_DIR/"
+    cp .env "\$BACKUP_DIR/"
+    
+    # Backup logs if needed
+    if [ -d "logs" ]; then
+      tar -czf "\$BACKUP_DIR/logs.tar.gz" logs
+    fi
+    
+    echo "Backup completed: \$BACKUP_DIR"
+EOF
+}
+
+# Deploy function
+deploy() {
+  # Upload docker-compose.prod.yml
+  scp -i $SSH_KEY_FILE -o StrictHostKeyChecking=no \
+    docker-compose.prod.yml \
+    $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_DIR/docker-compose.yml
+
+  # Generate .env file with version and other environment variables
+  cat > .env.prod << EOF
+VERSION=$VERSION
+DOCKER_REGISTRY=$DOCKER_REGISTRY
+DOCKER_REPO=$DOCKER_REPO
+ENVIRONMENT=production
+FUSEKI_ADMIN_PASSWORD=$FUSEKI_ADMIN_PASSWORD
+# Add other production environment variables here
+EOF
+
+  # Upload .env file
+  scp -i $SSH_KEY_FILE -o StrictHostKeyChecking=no \
+    .env.prod \
+    $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_DIR/.env
+
+  # Execute deployment commands on remote server
+  ssh -i $SSH_KEY_FILE -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST << EOF
+    cd $DEPLOY_DIR
+
+    # Pull latest images
+    docker compose pull
+
+    # Store currently running container IDs for Fuseki service
+    OLD_FUSEKI_CONTAINER=\$(docker compose ps -q fuseki)
+    
+    # Update services with zero downtime
+    for service in \$(docker compose config --services | grep -v fuseki); do
+      echo "Updating service: \$service"
+      docker compose up -d --no-deps --build \$service
+      
+      # Wait for service to be healthy
+      echo "Waiting for \$service to be healthy..."
+      timeout 300s bash -c "until docker compose ps \$service | grep -q '(healthy)'; do sleep 5; done" || {
+        echo "Service \$service failed to become healthy within timeout"
+        exit 1
+      }
+    done
+    
+    # Special handling for Fuseki service (stateful)
+    echo "Updating Fuseki service with zero downtime..."
+    
+    # Start new Fuseki container but don't stop old one yet
+    docker compose up -d --no-deps --scale fuseki=2 fuseki
+    
+    # Wait for new Fuseki to be healthy
+    NEW_FUSEKI_CONTAINER=\$(docker compose ps -q fuseki | grep -v \$OLD_FUSEKI_CONTAINER || echo "")
+    
+    if [ ! -z "\$NEW_FUSEKI_CONTAINER" ]; then
+      echo "Waiting for new Fuseki container to be healthy..."
+      timeout 300s bash -c "until docker inspect \$NEW_FUSEKI_CONTAINER | grep -q '\"healthy\": true'; do sleep 5; done" || {
+        echo "New Fuseki container failed to become healthy within timeout"
+        exit 1
+      }
+      
+      # Gradually transition traffic to new container using nginx reload
+      # This assumes you have nginx as reverse proxy with proper configuration
+      if [ -f "/etc/nginx/conf.d/tbox.conf" ]; then
+        sed -i "s/\$OLD_FUSEKI_CONTAINER/\$NEW_FUSEKI_CONTAINER/g" /etc/nginx/conf.d/tbox.conf
+        nginx -s reload
+      fi
+      
+      # Wait a bit for connections to drain
+      sleep 30
+      
+      # Stop old container
+      docker stop \$OLD_FUSEKI_CONTAINER
+      docker rm \$OLD_FUSEKI_CONTAINER
+    else
+      echo "Warning: Could not identify new Fuseki container"
+    fi
+
+    # Scale back to normal
+    docker compose up -d --scale fuseki=1
+    
+    # Clean up old images
+    docker system prune -af --filter "until=24h" --volumes
+EOF
+
+  echo "Deployment to production completed successfully."
+}
+
+# Verification function
+verify() {
+  echo "Verifying production deployment..."
+  
+  # Execute verification commands on remote server
+  ssh -i $SSH_KEY_FILE -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST << EOF
+    cd $DEPLOY_DIR
+    
+    # Check if all services are running
+    echo "Checking service status..."
+    docker compose ps
+    
+    # Verify Fuseki is responding
+    echo "Verifying Fuseki service..."
+    curl -s http://localhost:4030/$/ping > /dev/null && echo "Fuseki is responding" || echo "Fuseki is not responding"
+    
+    # Verify nginx is responding
+    echo "Verifying nginx service..."
+    curl -s http://localhost:4000/ > /dev/null && echo "Nginx is responding" || echo "Nginx is not responding"
+    
+    # Additional verifications can be added here
+EOF
+}
+
+# Run deployment process
+backup
+deploy
+verify
+
+# Clean up
+rm -f $SSH_KEY_FILE

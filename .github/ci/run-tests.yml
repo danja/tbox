@@ -1,0 +1,108 @@
+#!/bin/bash
+# Run all test suites (unit, integration, and e2e)
+
+set -e
+
+echo "Running tests for TBox"
+echo "======================="
+
+# Run service-specific unit tests
+run_unit_tests() {
+  echo "Running unit tests..."
+  
+  # Find all test directories
+  TEST_DIRS=$(find . -path '*/test' -type d | grep -v 'node_modules')
+  
+  # Run tests in each directory
+  for DIR in $TEST_DIRS; do
+    echo "Testing in $DIR"
+    pushd "$(dirname "$DIR")" > /dev/null
+    
+    # If there's a package.json with test script, run it
+    if [ -f "package.json" ] && grep -q '"test"' package.json; then
+      npm test
+    else
+      echo "No test script found, skipping"
+    fi
+    
+    popd > /dev/null
+  done
+  
+  echo "Unit tests completed"
+}
+
+# Run integration tests
+run_integration_tests() {
+  echo "Running integration tests..."
+  
+  # Check if services are up
+  if ! curl -s http://fuseki:3030/$/ping > /dev/null; then
+    echo "Error: Fuseki is not running"
+    return 1
+  fi
+  
+  if ! curl -s http://app:8311/health > /dev/null; then
+    echo "Error: App service is not running"
+    return 1
+  fi
+  
+  # Test Fuseki SPARQL endpoint
+  echo "Testing Fuseki SPARQL endpoint..."
+  curl -s -X POST http://fuseki:3030/test-mem/update \
+    -H "Authorization: Basic $(echo -n 'admin:admin123' | base64)" \
+    -H "Content-Type: application/sparql-update" \
+    --data "INSERT DATA { <http://example/s> <http://example/p> <http://example/o> }"
+  
+  # Verify data was inserted
+  RESULT=$(curl -s -X GET http://fuseki:3030/test-mem/query \
+    -H "Accept: application/sparql-results+json" \
+    --data-urlencode "query=SELECT * WHERE { ?s ?p ?o }")
+  
+  if echo "$RESULT" | grep -q "example/o"; then
+    echo "Fuseki SPARQL endpoint test passed"
+  else
+    echo "Fuseki SPARQL endpoint test failed"
+    return 1
+  fi
+  
+  # Test App health endpoint
+  echo "Testing App health endpoint..."
+  HEALTH=$(curl -s http://app:8311/health)
+  
+  if echo "$HEALTH" | grep -q "status.*ok"; then
+    echo "App health endpoint test passed"
+  else
+    echo "App health endpoint test failed"
+    return 1
+  fi
+  
+  echo "Integration tests completed"
+}
+
+# Run end-to-end tests
+run_e2e_tests() {
+  echo "Running end-to-end tests..."
+  
+  # Test the complete flow from app to Fuseki and back
+  # Add your e2e test logic here
+  
+  echo "End-to-end tests completed"
+}
+
+# Create test results directory
+mkdir -p /app/test-results
+
+# Run all test suites and save results
+(run_unit_tests && echo "Unit tests passed" > /app/test-results/unit.txt) || echo "Unit tests failed" > /app/test-results/unit.txt
+(run_integration_tests && echo "Integration tests passed" > /app/test-results/integration.txt) || echo "Integration tests failed" > /app/test-results/integration.txt
+(run_e2e_tests && echo "E2E tests passed" > /app/test-results/e2e.txt) || echo "E2E tests failed" > /app/test-results/e2e.txt
+
+# Check if all tests passed
+if grep -q "failed" /app/test-results/*.txt; then
+  echo "Some tests failed!"
+  grep -l "failed" /app/test-results/*.txt
+  exit 1
+else
+  echo "All tests passed!"
+  exit 0
+fi

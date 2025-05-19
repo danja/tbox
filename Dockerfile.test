@@ -1,0 +1,26 @@
+#!/bin/bash
+# Dockerfile.test - Test environment Dockerfile
+
+FROM node:alpine
+
+WORKDIR /app
+
+# Install dependencies for testing
+RUN apk add --no-cache \
+    curl \
+    bash \
+    jq \
+    wget \
+    ca-certificates
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci
+
+# Copy source code and test files
+COPY . .
+
+# Run tests
+CMD ["npm", "test"]

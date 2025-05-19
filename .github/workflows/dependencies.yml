@@ -1,0 +1,97 @@
+name: Dependencies Update
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Every Monday at midnight UTC
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  update-dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Update npm dependencies
+        id: npm-update
+        run: |
+          # Update dependencies in package.json files
+          find . -name "package.json" -not -path "*/node_modules/*" -exec sh -c '
+            cd "$(dirname "{}")" && 
+            npm outdated --json | jq -r "keys[]" | xargs -r -n1 npm install
+          ' \;
+          
+          # Check if there are changes
+          if git diff --name-only | grep -q "package.json\|package-lock.json"; then
+            echo "dependencies_updated=true" >> $GITHUB_OUTPUT
+          else
+            echo "dependencies_updated=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Update Docker base images
+        id: docker-update
+        run: |
+          # Find all Dockerfiles
+          DOCKERFILES=$(find . -name "Dockerfile" -type f)
+          
+          # For each Dockerfile, check for updates to base images
+          for DOCKERFILE in $DOCKERFILES; do
+            # Extract base image
+            BASE_IMG=$(grep -m 1 "^FROM" $DOCKERFILE | awk '{print $2}')
+            if [[ "$BASE_IMG" == *":"* ]]; then
+              # Image has specific tag
+              IMG_NAME=$(echo $BASE_IMG | cut -d':' -f1)
+              IMG_TAG=$(echo $BASE_IMG | cut -d':' -f2)
+              
+              # If tag is not 'latest', check for newer version
+              if [[ "$IMG_TAG" != "latest" ]]; then
+                # Pull the latest version of the image
+                docker pull $IMG_NAME:latest
+                
+                # Replace the tag in Dockerfile if newer version available
+                docker pull $BASE_IMG
+                
+                # Compare digests
+                OLD_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $BASE_IMG)
+                NEW_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' $IMG_NAME:latest)
+                
+                if [[ "$OLD_DIGEST" != "$NEW_DIGEST" ]]; then
+                  # Update the Dockerfile - substitute current tag with latest
+                  sed -i "s|FROM $BASE_IMG|FROM $IMG_NAME:latest|" $DOCKERFILE
+                  echo "Updated $DOCKERFILE base image from $BASE_IMG to $IMG_NAME:latest"
+                fi
+              fi
+            fi
+          done
+          
+          # Check if there are changes
+          if git diff --name-only | grep -q "Dockerfile"; then
+            echo "docker_updated=true" >> $GITHUB_OUTPUT
+          else
+            echo "docker_updated=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Create Pull Request
+        if: steps.npm-update.outputs.dependencies_updated == 'true' || steps.docker-update.outputs.docker_updated == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update dependencies
+          title: 'chore: Update dependencies'
+          body: |
+            Automated dependency updates by GitHub Actions.
+            
+            ## Changes
+            
+            - Updated npm dependencies: ${{ steps.npm-update.outputs.dependencies_updated }}
+            - Updated Docker base images: ${{ steps.docker-update.outputs.docker_updated }}
+            
+            Please review and merge.
+          branch: dependency-updates
+          base: main
+          labels: dependencies
