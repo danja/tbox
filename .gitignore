@@ -2,6 +2,8 @@
 projects/*
 !projects/.gitkeep
 
+**/*repomix.md 
+
 fuseki-data
 fuseki/databases
 fuseki/storees
