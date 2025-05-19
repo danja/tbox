@@ -1,6 +1,6 @@
 # tbox
 
-[![CI/CD](https://github.com/danja/tbox/actions/workflows/main.yml/badge.svg)](https://github.com/danja/tbox/actions/workflows/main.yml)
+[![CI/CD](https://github.com/danja/tbox/actions/workflows/main.yml/badge.svg)](https://github.com/danja/tbox/actions/workflows/main.yml) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danja/tbox)
 
 
 A Docker container for **hyperdata.it** projects. This is very experimental, not yet usable.
