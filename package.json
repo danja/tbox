@@ -2,6 +2,7 @@
   "name": "tbox",
   "version": "1.0.0",
   "description": "Docker-contained environment for hyperdata.it apps",
+  "type": "module",
   "private": true,
   "workspaces": [
     "services/*"

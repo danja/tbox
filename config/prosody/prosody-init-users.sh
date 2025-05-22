@@ -18,7 +18,10 @@ add_user() {
 }
 
 add_user danja@localhost Claudiopup
+add_user danbri@localhost canary
 add_user alice@localhost wonderland
 add_user bob@localhost builder
+add_user chaals@localhost bigguy
+add_user dogbot@localhost woofwoof
 
 exit 0

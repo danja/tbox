@@ -1,29 +1,20 @@
 #!/bin/bash
 set -e
 
-CERT_DIR="/etc/prosody/certs"
-KEY_FILE="$CERT_DIR/localhost.key"
-CRT_FILE="$CERT_DIR/localhost.crt"
+echo "==> docker-entrypoint.sh: Script started."
+echo "==> docker-entrypoint.sh: Running as user: $(id)"
+echo "==> docker-entrypoint.sh: PROSODY_DOMAIN as seen by entrypoint: '${PROSODY_DOMAIN}'"
+echo "==> docker-entrypoint.sh: PROSODY_ADMIN_JID as seen by entrypoint: '${PROSODY_ADMIN_JID}'"
+echo "==> docker-entrypoint.sh: PROSODY_ADMIN_PASSWORD as seen by entrypoint: '${PROSODY_ADMIN_PASSWORD:-not set}'"
 
-# Generate self-signed certs if missing
-if [[ ! -f "$KEY_FILE" || ! -f "$CRT_FILE" ]]; then
-    echo "Generating self-signed certificates for localhost..."
-    prosodyctl cert generate localhost
-fi
+#apt-get update && apt-get install -y --no-install-recommends gosu 
+# rm -rf /var/lib/apt/lists/*
 
-# Start Prosody in the background
-prosody &
-PROSODY_PID=$!
+# Ensure certificates and DH parameters are in place using the dedicated script.
+echo "==> docker-entrypoint.sh: Attempting to execute /usr/local/bin/ensure-prosody-certs.sh..."
+/usr/local/bin/ensure-prosody-certs.sh
+echo "==> docker-entrypoint.sh: Finished executing /usr/local/bin/ensure-prosody-certs.sh."
 
-# Wait a bit for Prosody to be ready
-sleep 3
-
-# Run user initialization script
-if [ -x "/usr/local/bin/prosody-init-users.sh" ]; then
-    /usr/local/bin/prosody-init-users.sh
-else
-    echo "User init script not found or not executable."
-fi
-
-# Wait for Prosody process
-wait $PROSODY_PID
+echo "==> docker-entrypoint.sh: Starting Prosody in foreground as prosody user..."
+# Run Prosody directly as prosody user in foreground
+exec runuser -u prosody -- prosody --config /etc/prosody/prosody.cfg.lua

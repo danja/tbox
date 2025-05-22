@@ -1,15 +1,26 @@
 FROM prosody/prosody
 
 USER root
+
+# Install gosu for privilege dropping
+RUN apt-get update && apt-get install -y --no-install-recommends gosu && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create log directory and files, ensure prosody user owns them
 RUN mkdir -p /var/lib/prosody/logs && \
     touch /var/lib/prosody/logs/prosody.log /var/lib/prosody/logs/error.log && \
     chown -R prosody:prosody /var/lib/prosody
+# Copy Prosody configuration files
+COPY config/prosody/prosody.cfg.lua /etc/prosody/prosody.cfg.lua
+COPY config/prosody/conf.d/ /etc/prosody/conf.d/
 
 # Copy entrypoint and user creation scripts
 COPY config/prosody/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY config/prosody/ensure-prosody-certs.sh /usr/local/bin/ensure-prosody-certs.sh
 COPY config/prosody/prosody-init-users.sh /usr/local/bin/prosody-init-users.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh /usr/local/bin/prosody-init-users.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh /usr/local/bin/ensure-prosody-certs.sh /usr/local/bin/prosody-init-users.sh
 
-USER prosody
+# The base image's default command will run as prosody, but our entrypoint script runs as root initially.
+# The entrypoint script will use gosu to switch to the prosody user before exec'ing the final prosody command.
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

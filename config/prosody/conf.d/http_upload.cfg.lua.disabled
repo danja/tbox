@@ -1,0 +1,21 @@
+-- File: /home/danny/hyperdata/tbox/config/prosody/conf.d/http_upload.cfg.lua
+-- Configures an HTTP File Upload component
+
+local domain = os.getenv("PROSODY_DOMAIN") or "localhost"
+local upload_host = "upload." .. domain
+
+-- HTTP Upload component disabled due to missing mod_http_upload module
+-- Component(upload_host) "http_upload"
+--     name = "HTTP File Upload service on " .. domain
+--     -- The http_url_base should be the publicly accessible URL for downloads
+--     -- If Prosody's HTTP server is directly accessible:
+--     http_url_base = "https://" .. upload_host .. "/" -- Assuming HTTPS on standard port
+--     -- If behind a reverse proxy, adjust accordingly.
+--     http_upload_file_size_limit = 104857600 -- 100MB limit (in bytes)
+--     http_upload_expire_after = 60 * 60 * 24 * 7 -- Files expire after 7 days (in seconds)
+--     http_upload_path = "/var/lib/prosody/http_upload" -- Ensure this directory is writable by Prosody
+--     ssl = {
+--         key = "/etc/prosody/certs/" .. domain .. ".key"; -- Reusing main domain's cert
+--         certificate = "/etc/prosody/certs/" .. domain .. ".crt"; -- Reusing main domain's cert
+--     }
+-- Make sure the directory specified in http_upload_path exists and is writable by the prosody user.

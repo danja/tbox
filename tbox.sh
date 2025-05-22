@@ -60,7 +60,9 @@ restart_services() {
 restart_service() {
     SERVICE=$1
     log "Restarting $SERVICE service..."
-    $DOCKER_COMPOSE restart "$SERVICE"
+    # Force recreate to ensure entrypoint scripts are re-run if changed
+    # and to pick up other docker-compose.yml changes.
+    $DOCKER_COMPOSE up -d --force-recreate "$SERVICE"
     log "$SERVICE restarted"
 }
 

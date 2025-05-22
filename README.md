@@ -26,6 +26,8 @@ A Docker container for **hyperdata.it** projects. This is all very experimental.
 * ssh client
 * node
 
+NB. It appears the latest version of Docker Compose (as found in Docker Desktop) replaces the `docker-compose` command with `docker compose`.
+
 Recommended is creating a dir `hyperdata` in your home directory, installing things there (there are other bits as well as tbox that may be useful). 
 
 ```sh
@@ -45,7 +47,7 @@ cd ~/hyperdata/tbox # whatever your local dir
 ./tbox.sh clean # complete rebuild, start - **danger** wipes volumes
 ./tbox.sh status
 ```
-Wait a bit...
+Wait 10 minutes...
 
 ## Exposed Services
 
@@ -55,14 +57,25 @@ Wait a bit...
 * http://localhost:4030/ - SPARQL server endpoints
 * http://localhost:4040/ - health check
 
+Wait a bit longer...
+
+*The following command won't work until after quite a while, the startup is time-consuming & a little resource-hungry. It generates a DH key, also pulls and builds material from GitHub. Expect `Connection reset by peer` a few times before ssh is ready to let you in.*
+
 ```sh
 ssh root@localhost -p 2222
 ```
 Password is `semem`
 
-It may grumble about certs. If so, do the keygen command it suggests and try again.
+It may grumble about certs. If so, do the keygen command it suggests *"remove with:"* and try again.
 
 ## XMPP
+
+```sh
+./tbox.sh logs xmpp
+
+# rebuild just this bit
+docker compose up -d --force-recreate xmpp
+```
 
 *In-progress...*
 
@@ -99,6 +112,9 @@ cd ~/hyperdata/tbox # my local dir
 docker compose down
 docker compose up -d
 ```
+
+docker-compose up -d --force-recreate xmpp
+
 
 - [Docker Cheatsheet](https://docs.docker.com/get-started/docker_cheatsheet.pdf)
 - [Docker Compose Cheatsheet](https://devopscycle.com/pdfs/the-ultimate-docker-compose-cheat-sheet.pdf)
