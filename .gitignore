@@ -1,12 +1,10 @@
-# Ignore everything in projects except .gitkeep and specific projects
-
-projects
+# Ignore all projects directories - they are independent repositories
+projects/
 projects/**
-# !projects/.gitkeep
 
-# Allow specific projects to be committed
-#!projects/tia/
-#!projects/tia/**
+# Keep the projects directory structure but ignore all contents
+!projects/
+!projects/.gitkeep
 
 **/*repomix.md 
 
