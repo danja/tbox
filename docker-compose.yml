@@ -63,7 +63,14 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "4000:4000"
+      - "4000:4000"   # Main dashboard
+      - "4200:4200"   # Squirt - RDF data manipulation tool
+      - "4210:4210"   # Atuin - Command history and shell data management
+      - "4220:4220"   # Transmissions - Communication protocols
+      - "4240:4240"   # Semem - Semantic memory and knowledge graph tools
+      - "4250:4250"   # Farelo - Content processing and transformation
+      - "4280:4280"   # Wstore - Web storage and content management
+      - "4290:4290"   # Hyperdata - Main project documentation
     volumes:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./services/web/public:/usr/share/nginx/html:ro
