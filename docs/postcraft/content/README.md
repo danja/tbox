@@ -11,9 +11,6 @@ A Docker container for **hyperdata.it** projects. This is very experimental.
 - http://localhost:4030/ - Fuseki
 - http://localhost:4040/ - health check
 
-Please create a bash script that will send a SPARQL UPDATE containing a triple with a short random string to a server running on `http://localhost:4030` at `/semem/update` and report if the response suggests it worked. Then a SELECT query should be applied to `/semem/query` and checked to see if the string value matches.
-The SPARQL server uses HTTP Basic authentication, Username: admin, Password: admin123
-Give me the script as a complete artifact.
 
 ## Contains
 

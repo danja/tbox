@@ -28,6 +28,12 @@ A Docker container for **hyperdata.it** projects. This is all very experimental.
 
 NB. It appears the latest version of Docker Compose (as found in Docker Desktop) replaces the `docker-compose` command with `docker compose`.
 
+Allowing things to run as a non-root user might help :
+```sh
+sudo groupadd docker
+sudo usermod -aG docker "$USER"
+```
+
 Recommended is creating a dir `hyperdata` in your home directory, installing things there (there are other bits as well as tbox that may be useful). 
 
 ```sh
@@ -35,6 +41,8 @@ mkdir ~/hyperdata
 cd ~/hyperdata
 git clone https://github.com/danja/tbox.git
 ```
+
+
 
 **tbox.sh** is a utility for managing the containers 
 
