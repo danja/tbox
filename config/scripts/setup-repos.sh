@@ -7,14 +7,17 @@ echo "Starting repository setup..."
 clone_repo() {
     repo=$1
     dirname=$(basename "$repo")
-    if [ ! -d "$dirname" ]; then
-        echo "Cloning $repo..."
-        git clone "https://github.com/$repo" "$dirname"
-        if [ -f "$dirname/package.json" ]; then
-            cd "$dirname" || exit
+    if [ -d "$dirname" ]; then
+        echo "Repository $dirname already exists. Updating..."
+        cd "$dirname" || exit
+        git pull
+        if [ -f "package.json" ]; then
             npm install
-            cd .. || exit
         fi
+        cd .. || exit
+    else
+        echo "Cloning $repo into $dirname..."
+        git clone "https://github.com/$repo" "$dirname"
     fi
 }
 
