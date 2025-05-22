@@ -3,17 +3,7 @@
 [![CI/CD](https://github.com/danja/tbox/actions/workflows/main.yml/badge.svg)](https://github.com/danja/tbox/actions/workflows/main.yml) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/danja/tbox)
 
 
-A Docker container for **hyperdata.it** projects. This is very experimental, not yet usable.
-
-## Exposed Services
-
-## HTTP
-
-- http://localhost:4000/ - nginx
-  http://localhost:4000/squirt/
-- http://localhost:4010/ - echo request header
-- http://localhost:4030/ - SPARQL server endpoints
-- http://localhost:4040/ - health check
+A Docker container for **hyperdata.it** projects. This is all very experimental.
 
 ## Contains
 
@@ -26,46 +16,51 @@ A Docker container for **hyperdata.it** projects. This is very experimental, not
 - node
 - ssh
 
-**hyperdata.it**
-
--
+**hyperdata.it** stuff (under `projects`)
 
 ## Install
 
-Run ./tbox-manage.sh clean to completely rebuild the environment _danger_ wipes volumes
+**Prequisites**
+
+* Docker Compose (installing with Docker Desktop is probably the easiest)
+* ssh client
+* node
+
+Recommended is creating a dir `hyperdata` in your home directory, installing things there (there are other bits as well as tbox that may be useful). 
+
+```sh
+mkdir ~/hyperdata
+cd ~/hyperdata
+git clone https://github.com/danja/tbox.git
+```
+
+**tbox.sh** is a utility for managing the containers 
+
+`Usage: ./tbox.sh start|stop|restart [service]|rebuild|clean|status|logs [service]`
+
+### First Run
 
 ```sh
 cd ~/hyperdata/tbox # whatever your local dir
-./tbox-manage.sh clean # _dangerOUS_
-./tbox-manage.sh logs [service]
-./tbox-manage.sh status
+./tbox.sh clean # complete rebuild, start - **danger** wipes volumes
+./tbox.sh status
 ```
-
----
-
-First time, run
-
-```sh
-cd ~/hyperdata/tbox # whatever your local dir
-./rebuild-start.sh
-```
-
-```sh
-sudo systemctl stop tbox
-cd ~/hyperdata/tbox # my local dir
-docker compose down
-docker compose up -d
-```
-
 Wait a bit...
+
+## Exposed Services
+
+* http://localhost:4000/ - nginx 
+  * http://localhost:4000/squirt/
+* http://localhost:4010/ - echo request header
+* http://localhost:4030/ - SPARQL server endpoints
+* http://localhost:4040/ - health check
 
 ```sh
 ssh root@localhost -p 2222
 ```
+Password is `semem`
 
-It may grumble about certs. Do the keygen command it suggests and login again.
-
-Then password is `semem`
+It may grumble about certs. If so, do the keygen command it suggests and try again.
 
 ## XMPP
 
@@ -97,6 +92,13 @@ To automate this for multiple users, add these commands to your Prosody/XMPP con
 You can add more users as needed. Make sure the client uses the correct username, domain (e.g., `@localhost`), and password.
 
 ## Troubleshooting
+
+```sh
+sudo systemctl stop tbox
+cd ~/hyperdata/tbox # my local dir
+docker compose down
+docker compose up -d
+```
 
 - [Docker Cheatsheet](https://docs.docker.com/get-started/docker_cheatsheet.pdf)
 - [Docker Compose Cheatsheet](https://devopscycle.com/pdfs/the-ultimate-docker-compose-cheat-sheet.pdf)
