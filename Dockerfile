@@ -32,9 +32,14 @@ RUN mkdir -p /home/projects && \
     chown -R semem:semem /home/projects && \
     chmod 755 /home/projects
 
-# Fix path to reference the correct location (with underscore)
+COPY config/scripts/startup.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/startup.sh
+
 COPY config/scripts/setup-repos.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup-repos.sh
+
+COPY config/scripts/setup-semem.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/setup-semem.sh
 
 # Create startup script
 RUN echo '#!/bin/sh' > /start.sh && \
@@ -46,6 +51,8 @@ RUN echo '#!/bin/sh' > /start.sh && \
     echo 'echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config' >> /start.sh && \
     echo 'echo "Running repository setup..."' >> /start.sh && \
     echo '/usr/local/bin/setup-repos.sh' >> /start.sh && \
+    echo 'echo "Running SEMEM setup..."' >> /start.sh && \
+    echo '/usr/local/bin/setup-semem.sh' >> /start.sh && \
     echo 'echo "Starting SSH daemon..."' >> /start.sh && \
     echo '/usr/sbin/sshd -D -e' >> /start.sh && \
     chmod +x /start.sh
