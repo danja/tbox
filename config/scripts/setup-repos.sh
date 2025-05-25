@@ -1,4 +1,4 @@
-echo "Starting repository setup..."
+echo "SETUP REPOS"
 
 # Add all existing cloned directories as safe directories to git config
 find /home/projects -maxdepth 1 -mindepth 1 -type d -print0 | xargs -0 -I {} git config --global --add safe.directory {}
