@@ -150,6 +150,8 @@ services:
       - PROSODY_ADMIN_PASSWORD=admin123
       - NODE_TLS_REJECT_UNAUTHORIZED=0
     command: [ "prosody" ] # Pass the 'prosody' command as arguments to the entrypoint script
+    networks:
+      - tbox-network
     restart: unless-stopped
 
   monitor:
@@ -159,10 +161,14 @@ services:
       - "4040:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - FUSEKI_URL=http://tbox-fuseki-1:3030
     depends_on:
       - app
       - fuseki
       - xmpp
+    networks:
+      - tbox-network
 
   # Add these services to your docker-compose.yml under the services section
 

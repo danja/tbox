@@ -4,9 +4,11 @@ import net from 'net';
 
 const app = express();
 
+const FUSEKI_URL = process.env.FUSEKI_URL || 'http://fuseki:3030';
+
 const checkFusekiHealth = async () => {
     try {
-        const response = await fetch('http://fuseki:3030/$/ping', {
+        const response = await fetch(`${FUSEKI_URL}/$/ping`, {
             timeout: 5000
         });
         return {
@@ -32,7 +34,7 @@ const checkProsodyHealth = async () => {
 
     try {
         // Check main XMPP C2S port (5222)
-        const c2sCheck = await checkTcpPort('xmpp', 5222);
+        const c2sCheck = await checkTcpPort('tbox-xmpp-1', 5222);
         health.services.c2s = {
             port: 5222,
             description: 'Client-to-Server connections',
@@ -40,7 +42,7 @@ const checkProsodyHealth = async () => {
         };
 
         // Check S2S port (5269)
-        const s2sCheck = await checkTcpPort('xmpp', 5269);
+        const s2sCheck = await checkTcpPort('tbox-xmpp-1', 5269);
         health.services.s2s = {
             port: 5269,
             description: 'Server-to-Server connections',
