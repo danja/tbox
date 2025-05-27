@@ -16,6 +16,11 @@
 4240: Semem - Semantic memory and knowledge graph tools
 4280: Wstore - HTTP file storage and retrieval server
 
+### Semem Service:
+4100: Semem API Server
+4110: Semem UI
+4120: Semem MCP Server
+
 ### Documentation & Examples:
 4290: Hyperdata - Main hyperdata.it project documentation
 
