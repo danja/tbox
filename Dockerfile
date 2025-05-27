@@ -41,21 +41,9 @@ RUN chmod +x /usr/local/bin/setup-repos.sh
 COPY config/scripts/setup-semem.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/setup-semem.sh
 
-# Create startup script
-RUN echo '#!/bin/sh' > /start.sh && \
-    echo 'echo "Configuring SSH for password auth..."' >> /start.sh && \
-    echo 'sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/" /etc/ssh/sshd_config' >> /start.sh && \
-    echo 'sed -i "s/#PasswordAuthentication.*/PasswordAuthentication yes/" /etc/ssh/sshd_config' >> /start.sh && \
-    echo 'sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/" /etc/ssh/sshd_config' >> /start.sh && \
-    echo 'echo "PermitRootLogin yes" >> /etc/ssh/sshd_config' >> /start.sh && \
-    echo 'echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config' >> /start.sh && \
-    echo 'echo "Running repository setup..."' >> /start.sh && \
-    echo '/usr/local/bin/setup-repos.sh' >> /start.sh && \
-    echo 'echo "Running SEMEM setup..."' >> /start.sh && \
-    echo '/usr/local/bin/setup-semem.sh' >> /start.sh && \
-    echo 'echo "Starting SSH daemon..."' >> /start.sh && \
-    echo '/usr/sbin/sshd -D -e' >> /start.sh && \
-    chmod +x /start.sh
+# Copy and set up startup script
+COPY config/scripts/startup.sh /start.sh
+RUN chmod +x /start.sh
 
 EXPOSE 22 3770 8311
 ENTRYPOINT ["/start.sh"]

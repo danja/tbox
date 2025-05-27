@@ -1,0 +1,26 @@
+# Use Node.js 18 Alpine as the base image
+FROM node:18-alpine
+
+# Install git (required for some npm packages)
+RUN apk add --no-cache git
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Install required dependencies
+RUN npm install loglevel express cors
+
+# Create a non-root user and switch to it
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN chown -R appuser:appgroup /app
+USER appuser
+
+# Expose the ports the app runs on
+EXPOSE 4100 4110 4120
+
+# Set the startup command
+CMD ["npm", "start"]

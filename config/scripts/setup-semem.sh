@@ -2,12 +2,12 @@
 
 # Setup script for semem service
 # This script is designed to be run after setup-repos.sh
+# It ensures the semem service has the correct permissions and dependencies
 
 echo "[INFO] Starting semem service setup..."
 
 # Define paths
-SEMEM_DIR="$HOME/hyperdata/tbox/projects/semem"
-START_SCRIPT="$SEMEM_DIR/start.sh"
+SEMEM_DIR="/home/projects/semem"
 
 # Check if semem directory exists
 if [ ! -d "$SEMEM_DIR" ]; then
@@ -16,28 +16,21 @@ if [ ! -d "$SEMEM_DIR" ]; then
     exit 1
 fi
 
-# Check if start script exists and is executable
-if [ ! -f "$START_SCRIPT" ]; then
-    echo "[ERROR] start.sh not found in $SEMEM_DIR"
-    exit 1
+# Ensure proper permissions
+chown -R semem:semem "$SEMEM_DIR"
+chmod -R 755 "$SEMEM_DIR"
+
+# Install dependencies if needed
+if [ -f "$SEMEM_DIR/package.json" ]; then
+    echo "[INFO] Installing semem dependencies..."
+    cd "$SEMEM_DIR" || exit 1
+    npm install
+    cd - > /dev/null || exit 1
 fi
 
-if [ ! -x "$START_SCRIPT" ]; then
-    echo "[INFO] Making start.sh executable..."
-    chmod +x "$START_SCRIPT" || {
-        echo "[ERROR] Failed to make start.sh executable"
-        exit 1
-    }
-fi
-
-echo "[INFO] Starting semem service..."
-# Run the start script in the background
-nohup "$START_SCRIPT" > "$SEMEM_DIR/semem-service.log" 2>&1 &
-SEMEM_PID=$!
-
-echo "[SUCCESS] semem service started with PID: $SEMEM_PID"
-echo "[INFO] Logs are being written to: $SEMEM_DIR/semem-service.log"
-
-# Make the script executable
-chmod +x "$0"
-echo "[INFO] setup-semem.sh is now executable"
+echo "[SUCCESS] semem service setup complete"
+echo "[INFO] The semem service will be started automatically by Docker Compose"
+echo "[INFO] Services will be available on:"
+echo "  - API: http://localhost:4100"
+echo "  - UI: http://localhost:4120"
+echo "  - Redirect: http://localhost:4110"
