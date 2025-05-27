@@ -1,42 +1,94 @@
-echo "SETUP REPOS"
+#!/bin/bash
+
+echo "[SETUP] Configuring repositories..."
+
+# Set the projects directory
+PROJECTS_DIR="/home/projects"
+mkdir -p "$PROJECTS_DIR"
+cd "$PROJECTS_DIR" || { echo "[ERROR] Failed to change to $PROJECTS_DIR"; exit 1; }
 
 # Add all existing cloned directories as safe directories to git config
-find /home/projects -maxdepth 1 -mindepth 1 -type d -print0 | xargs -0 -I {} git config --global --add safe.directory {}
+find "$PROJECTS_DIR" -maxdepth 1 -mindepth 1 -type d -print0 | xargs -0 -I {} git config --global --add safe.directory {}
 
-# Clone each repository if not already done
+# Clone or update a repository
 clone_repo() {
-    repo=$1
-    dirname=$(basename "$repo")
+    local repo=$1
+    local dirname="${repo##*/}"  # Get the last part of the repo path
+    local repo_url="https://github.com/$repo"
+    
     if [ -d "$dirname" ]; then
-        echo "Repository $dirname already exists. Updating..."
-        cd "$dirname" || exit
-        if ! git diff --quiet; then
-            echo "Uncommitted changes found. Resetting to remote..."
-            git reset --hard origin/main  # Assuming 'main' is your primary branch
+        echo "[INFO] Repository $dirname exists, updating..."
+        cd "$dirname" || return 1
+        
+        # Reset any local changes
+        git reset --hard HEAD
+        
+        # Fetch and reset to origin/main
+        git fetch origin
+        git checkout main
+        git reset --hard origin/main
+        
+        # Clean up any untracked files
+        git clean -fd
+        
+        # Update submodules if any
+        if [ -f ".gitmodules" ]; then
+            git submodule update --init --recursive
         fi
-        echo "Pulling latest changes..."
-        git pull
-        # Remove --force, as we're handling local changes now
+        
+        # Install npm dependencies if package.json exists
         if [ -f "package.json" ]; then
-            npm install
+            echo "[INFO] Installing npm dependencies for $dirname..."
+            npm ci --no-audit --prefer-offline
         fi
-        cd .. || exit
+        
+        cd .. || return 1
     else
-        echo "Cloning $repo into $dirname..."
-        git clone "https://github.com/$repo" "$dirname"
+        echo "[INFO] Cloning $repo into $dirname..."
+        if ! git clone --depth 1 --branch main "$repo_url" "$dirname"; then
+            echo "[ERROR] Failed to clone $repo"
+            return 1
+        fi
+        
+        # Initialize submodules if they exist
+        if [ -f "$dirname/.gitmodules" ]; then
+            echo "[INFO] Initializing submodules for $dirname..."
+            (cd "$dirname" && git submodule update --init --recursive)
+        fi
+        
+        # Install npm dependencies if package.json exists
+        if [ -f "$dirname/package.json" ]; then
+            echo "[INFO] Installing npm dependencies for $dirname..."
+            (cd "$dirname" && npm ci --no-audit --prefer-offline)
+        fi
     fi
+    
+    echo "[SUCCESS] $repo is ready"
+    return 0
 }
 
 # Process each repository
-clone_repo "danja/hyperdata"
-clone_repo "danja/semem"
-clone_repo "danja/transmissions"
-clone_repo "danja/tia"
-# clone_repo "danja/farelo"
-clone_repo "danja/squirt"
-clone_repo "danja/wstore"
-clone_repo "danja/atuin"
-clone_repo "danja/trellis"
+repos=(
+    "danja/hyperdata"
+    "danja/semem"
+    "danja/transmissions"
+    "danja/tia"
+    # "danja/farelo"
+    "danja/squirt"
+    "danja/wstore"
+    "danja/atuin"
+    "danja/trellis"
+)
+
+# Process each repository
+for repo in "${repos[@]}"; do
+    if [[ "$repo" == "#"* ]]; then
+        continue  # Skip commented out repositories
+    fi
+    clone_repo "$repo"
+done
+
+echo "[SUCCESS] All repositories have been processed"
 
 # Install npm packages for subdirectories with package.json
 find_and_install_npm() {
