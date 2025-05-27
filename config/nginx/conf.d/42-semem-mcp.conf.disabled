@@ -1,0 +1,14 @@
+# 4120: Semem MCP Server
+server {
+    listen 4120;
+    server_name localhost;
+    
+    location / {
+        proxy_pass http://semem:4120;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}

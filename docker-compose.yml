@@ -113,7 +113,9 @@ services:
       - "4290:4290"
     volumes:
       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/nginx/conf.d:/etc/nginx/conf.d:ro
       - ./services/web/public:/usr/share/nginx/html:ro
+      - ./projects:/projects:ro
     networks:
       - tbox-network
     depends_on:
