@@ -1,0 +1,26 @@
+{
+  "port": 4120,
+  "graphName": "http://danny.ayers.name/content",
+  "chatModel": "qwen2:1.5b",
+  "embeddingModel": "nomic-embed-text",
+  "sparqlEndpoints": [
+    {
+      "queryEndpoint": "http://fuseki:3030/semem/query",
+      "updateEndpoint": "http://fuseki:3030/semem/update",
+      "auth": {
+        "user": "admin",
+        "password": "admin123"
+      }
+    }
+  ],
+  "llmProviders": [
+    {
+      "type": "ollama",
+      "baseUrl": "http://ollama:11434",
+      "chatModel": "qwen2:1.5b",
+      "embeddingModel": "nomic-embed-text",
+      "priority": 1,
+      "capabilities": ["embedding", "chat"]
+    }
+  ]
+}

@@ -72,33 +72,20 @@ services:
     tty: true
     stdin_open: true
     container_name: semem
-    environment:
-      - NODE_ENV=production
-      - PORT=4100
-      - UI_PORT=4120
-      - REDIRECT_PORT=4110
-      - NODE_TLS_REJECT_UNAUTHORIZED=0
-      - CONFIG_FILE=/app/config/config.js
     ports:
-      - "4100:4100"
-      - "4110:4110"
-      - "4120:4120"
+      - "4100:4100"  # API
+      - "4110:4110"  # UI
+      - "4120:4120"  # MCP
     volumes:
       - ./projects/semem:/app
       - ./config/semem:/app/config
     working_dir: /app
-    command: sh -c "npm install && npm start"
+    command: sh -c "node servers/start-all.js"
     networks:
       - tbox-network
     depends_on:
       fuseki:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "http://localhost:4100/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 30s
 
   nginx:
     image: nginx:alpine
@@ -215,6 +202,7 @@ services:
       - "9090:9090" # Prometheus UI
     networks:
       - tbox-network
+
 
 networks:
   tbox-network:
