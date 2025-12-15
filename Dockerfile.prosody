@@ -2,10 +2,6 @@ FROM prosody/prosody
 
 USER root
 
-# Install gosu for privilege dropping
-RUN apt-get update && apt-get install -y --no-install-recommends gosu && \
-    rm -rf /var/lib/apt/lists/*
-
 # Create log directory and files, ensure prosody user owns them
 RUN mkdir -p /var/lib/prosody/logs && \
     touch /var/lib/prosody/logs/prosody.log /var/lib/prosody/logs/error.log && \
